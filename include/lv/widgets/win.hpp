@@ -1,0 +1,78 @@
+#pragma once
+
+/**
+ * @file win.hpp
+ * @brief Zero-cost wrapper for LVGL window widget
+ */
+
+#include <lvgl.h>
+#include "../core/object.hpp"
+#include "../core/event.hpp"
+#include "../core/style.hpp"
+
+namespace lv {
+
+/**
+ * @brief Window widget wrapper
+ *
+ * A window with header, title, and content area.
+ *
+ * Size: sizeof(void*) - 4 or 8 bytes
+ */
+class Window : public ObjectView,
+            public ObjectMixin<Window>,
+               public EventMixin<Window>,
+               public StyleMixin<Window> {
+public:
+    constexpr Window() noexcept : ObjectView(nullptr) {}
+
+    constexpr Window(wrap_t, lv_obj_t* obj) noexcept : ObjectView(obj) {}
+
+    [[nodiscard]] static Window create(lv_obj_t* parent) {
+        return Window(wrap, lv_win_create(parent));
+    }
+
+    [[nodiscard]] static Window create(ObjectView parent) {
+        return create(parent.get());
+    }
+
+    // ==================== Header ====================
+
+    /// Add title to header
+    [[nodiscard]] ObjectView add_title(const char* txt) noexcept {
+        return ObjectView(lv_win_add_title(m_obj, txt));
+    }
+
+    /// Add button to header (returns button object)
+    [[nodiscard]] ObjectView add_button(const void* icon, int32_t btn_w) noexcept {
+        return ObjectView(lv_win_add_button(m_obj, icon, btn_w));
+    }
+
+    /// Get header object
+    [[nodiscard]] ObjectView header() const noexcept {
+        return ObjectView(lv_win_get_header(m_obj));
+    }
+
+    // ==================== Content ====================
+
+    /// Get content object (where to add child widgets)
+    [[nodiscard]] ObjectView content() const noexcept {
+        return ObjectView(lv_win_get_content(m_obj));
+    }
+
+    // ==================== Size ====================
+
+    /// Set size
+    Window& size(int32_t w, int32_t h) noexcept {
+        lv_obj_set_size(m_obj, w, h);
+        return *this;
+    }
+
+    /// Fill parent
+    Window& fill() noexcept {
+        lv_obj_set_size(m_obj, LV_PCT(100), LV_PCT(100));
+        return *this;
+    }
+};
+
+} // namespace lv
