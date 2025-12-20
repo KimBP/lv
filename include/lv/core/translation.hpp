@@ -110,9 +110,9 @@ inline const char* get(const char* tag) noexcept {
  *   lv::translation::add_static(langs, tags, trans);
  */
 inline lv_translation_pack_t* add_static(
-    const char* const languages[],
-    const char* const tags[],
-    const char* const translations[]) noexcept {
+    const char* languages[],
+    const char* tags[],
+    const char* translations[]) noexcept {
     return lv_translation_add_static(languages, tags, translations);
 }
 

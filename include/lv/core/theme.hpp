@@ -19,35 +19,29 @@ namespace lv {
  */
 class Theme {
     lv_theme_t* m_theme;
-    bool m_owned;
 
 public:
-    /// Create a new theme
-    Theme() noexcept : m_theme(lv_theme_create()), m_owned(true) {}
+    /// Default constructor (null theme)
+    Theme() noexcept : m_theme(nullptr) {}
 
     /// Wrap existing theme (non-owning)
-    explicit Theme(lv_theme_t* theme) noexcept : m_theme(theme), m_owned(false) {}
+    explicit Theme(lv_theme_t* theme) noexcept : m_theme(theme) {}
 
-    ~Theme() {
-        // Note: LVGL doesn't have lv_theme_delete, themes are typically static
-    }
+    ~Theme() = default;
 
-    // Non-copyable
-    Theme(const Theme&) = delete;
-    Theme& operator=(const Theme&) = delete;
+    // Copyable (non-owning wrapper)
+    Theme(const Theme&) = default;
+    Theme& operator=(const Theme&) = default;
 
     // Moveable
-    Theme(Theme&& other) noexcept : m_theme(other.m_theme), m_owned(other.m_owned) {
+    Theme(Theme&& other) noexcept : m_theme(other.m_theme) {
         other.m_theme = nullptr;
-        other.m_owned = false;
     }
 
     Theme& operator=(Theme&& other) noexcept {
         if (this != &other) {
             m_theme = other.m_theme;
-            m_owned = other.m_owned;
             other.m_theme = nullptr;
-            other.m_owned = false;
         }
         return *this;
     }

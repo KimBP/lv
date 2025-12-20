@@ -25,10 +25,10 @@
 // ==================== Translation Data ====================
 
 // Supported languages
-static const char* const g_languages[] = {"en", "de", "fr", "es", nullptr};
+static const char* g_languages[] = {"en", "de", "fr", "es", nullptr};
 
 // Translation tags (keys)
-static const char* const g_tags[] = {
+static const char* g_tags[] = {
     "app_title",
     "greeting",
     "settings",
@@ -43,7 +43,7 @@ static const char* const g_tags[] = {
 };
 
 // Translations: ordered by tag, then by language (en, de, fr, es)
-static const char* const g_translations[] = {
+static const char* g_translations[] = {
     // app_title
     "Translation Demo", "Ubersetzungs-Demo", "Demo de Traduction", "Demo de Traduccion",
     // greeting

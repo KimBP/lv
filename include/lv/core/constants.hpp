@@ -113,8 +113,12 @@ namespace kFlag {
     constexpr auto flex_in_new_track   = LV_OBJ_FLAG_FLEX_IN_NEW_TRACK;
     constexpr auto user_1              = LV_OBJ_FLAG_USER_1;
     constexpr auto user_2              = LV_OBJ_FLAG_USER_2;
+#ifdef LV_OBJ_FLAG_USER_3
     constexpr auto user_3              = LV_OBJ_FLAG_USER_3;
+#endif
+#ifdef LV_OBJ_FLAG_USER_4
     constexpr auto user_4              = LV_OBJ_FLAG_USER_4;
+#endif
 }
 
 // ============================================================================
@@ -387,7 +391,9 @@ namespace kEvent {
     constexpr auto refresh             = LV_EVENT_REFRESH;
     constexpr auto ready               = LV_EVENT_READY;
     constexpr auto cancel              = LV_EVENT_CANCEL;
+#ifdef LV_EVENT_STATE_CHANGED
     constexpr auto state_changed       = LV_EVENT_STATE_CHANGED;
+#endif
 
     // -------------------- Widget: Lifecycle events --------------------
     // These fire on widgets during creation, deletion, and structural changes
@@ -423,7 +429,9 @@ namespace kEvent {
     constexpr auto flush_finish            = LV_EVENT_FLUSH_FINISH;      ///< Display: flush callback complete
     constexpr auto flush_wait_start        = LV_EVENT_FLUSH_WAIT_START;  ///< Display: flush wait starting
     constexpr auto flush_wait_finish       = LV_EVENT_FLUSH_WAIT_FINISH; ///< Display: flush wait complete
+#ifdef LV_EVENT_UPDATE_LAYOUT_COMPLETED
     constexpr auto update_layout_completed = LV_EVENT_UPDATE_LAYOUT_COMPLETED; ///< Display: layout update complete
+#endif
     constexpr auto vsync                   = LV_EVENT_VSYNC;             ///< Display: vsync signal received
     constexpr auto vsync_request           = LV_EVENT_VSYNC_REQUEST;     ///< Display: vsync requested
 
