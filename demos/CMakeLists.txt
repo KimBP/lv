@@ -19,8 +19,20 @@ add_executable(smartwatch_demo
 target_link_libraries(smartwatch_demo PRIVATE lv::lv lvgl)
 target_include_directories(smartwatch_demo PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 
+# Analog Clock demo (extracted from NXP Smartwatch)
+file(GLOB ANALOG_CLOCK_ASSETS analog_clock/generated/images/*.c)
+add_executable(analog_clock_demo
+    analog_clock/main.cpp
+    ${ANALOG_CLOCK_ASSETS}
+)
+target_link_libraries(analog_clock_demo PRIVATE lv::lv lvgl)
+target_include_directories(analog_clock_demo PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/analog_clock/generated
+)
+
 # All demos
-set(ALL_DEMOS ebike_demo smartwatch_demo)
+set(ALL_DEMOS ebike_demo smartwatch_demo analog_clock_demo)
 
 # Try to find X11 first (native Linux)
 find_package(X11 QUIET)

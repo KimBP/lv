@@ -1,3 +1,4 @@
+.gitignore
 # Build directories
 build/
 cmake-build-*/
@@ -32,5 +33,6 @@ compile_commands.json
 Thumbs.db
 
 # Internal tracking docs
+docs/OBSERVER_API_PROPOSAL.md
 docs/API_COVERAGE.md
 docs/TODO.md

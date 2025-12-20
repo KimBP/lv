@@ -121,6 +121,8 @@
 #define LV_FONT_MONTSERRAT_48 0
 
 #define LV_FONT_DEFAULT &lv_font_montserrat_14
+/* Large generated fonts for demos (e.g. nxp smartwatch) */
+#define LV_FONT_FMT_TXT_LARGE 1
 
 /*==================
  * TEXT SETTINGS
