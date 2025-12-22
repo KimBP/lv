@@ -93,6 +93,12 @@
 #define LV_USE_TILEVIEW   1
 #define LV_USE_WIN        1
 
+/* OpenGL ES driver (for 3D texture support) */
+#define LV_USE_OPENGLES   1
+
+/* 3D texture widget (requires LV_USE_OPENGLES) */
+#define LV_USE_3DTEXTURE  1
+
 /*==================
  * THEMES
  *==================*/

@@ -70,5 +70,11 @@
 #include "draw_image.hpp"    // ImageDsc
 #include "draw_task.hpp"     // DrawTaskView, draw system utilities
 
+// 3D texture drawing (requires LV_USE_3DTEXTURE)
+#include "draw_3d.hpp"       // Draw3dDsc
+
+// Image decoding
+#include "image_decoder.hpp" // ImageDecoderDsc, ImageDecoder
+
 // Note: lv_draw_mask_rect_dsc_t is internal to LVGL (private header)
 // Note: lv_draw_vector API is large and not yet wrapped
