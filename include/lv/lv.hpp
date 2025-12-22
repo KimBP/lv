@@ -63,6 +63,9 @@
 #include "core/font_loader.hpp"
 #include "core/string_utils.hpp"
 
+// Misc utilities
+#include "misc/gradient.hpp"
+
 // Internationalization (requires LV_USE_TRANSLATION)
 #if LV_USE_TRANSLATION
 #include "core/translation.hpp"

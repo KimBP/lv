@@ -42,6 +42,12 @@
 #define LV_DRAW_BUF_STRIDE_ALIGN 1
 #define LV_DRAW_BUF_ALIGN 4
 
+/* Enable complex gradients (linear at angles, radial, conical) */
+#define LV_USE_DRAW_SW_COMPLEX_GRADIENTS 1
+
+/* Max gradient color stops (default 2, needs 8 for rainbow gradients) */
+#define LV_GRADIENT_MAX_STOPS 8
+
 /*=======================
  * FEATURE CONFIGURATION
  *=======================*/

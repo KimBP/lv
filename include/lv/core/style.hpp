@@ -569,6 +569,12 @@ public:
         return *static_cast<Derived*>(this);
     }
 
+    /// Set full gradient descriptor
+    Derived& bg_grad(const lv_grad_dsc_t* grad, lv_style_selector_t sel = 0) noexcept {
+        lv_obj_set_style_bg_grad(obj(), grad, sel);
+        return *static_cast<Derived*>(this);
+    }
+
     Derived& bitmap_mask_src(const void* src, lv_style_selector_t sel = 0) noexcept {
         lv_obj_set_style_bitmap_mask_src(obj(), src, sel);
         return *static_cast<Derived*>(this);
