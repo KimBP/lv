@@ -66,10 +66,9 @@ extern "C" void test_c_style(lv_obj_t* obj) {
 // C++ version
 void test_cpp_style(lv_obj_t* obj) {
     lv::ObjectView(obj)
-        .add_flag(LV_OBJ_FLAG_CLICKABLE); // Just to have something
-    lv_obj_set_style_bg_color(obj, lv::rgb(0xFF0000), 0);
-    lv_obj_set_style_radius(obj, 8, 0);
-    lv_obj_set_style_pad_all(obj, 16, 0);
+        .bg_color(lv::rgb(0xFF0000))
+        .radius(8)
+        .padding(16);
 }
 
 // ============================================================
