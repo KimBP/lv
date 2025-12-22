@@ -11,12 +11,13 @@
  */
 
 #include <lv/lv.hpp>
+#include <lv/assets/cursor.hpp>
 
 int main() {
     lv::init();
 
 #if LV_USE_X11
-    lv::X11Display display("Hello LVGL", 480, 320);
+    lv::X11Display display("Hello LVGL", 480, 320, &lv::cursor_arrow);
 #elif LV_USE_SDL
     lv::SDLDisplay display(480, 320);
 #else

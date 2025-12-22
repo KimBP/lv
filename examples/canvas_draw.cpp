@@ -8,6 +8,7 @@
  */
 
 #include <lv/lv.hpp>
+#include <lv/assets/cursor.hpp>
 #include <lv/draw/draw.hpp>
 
 class CanvasDrawDemo {
@@ -181,7 +182,7 @@ int main() {
     lv::init();
 
     // Create display
-    lv::X11Display display("Canvas Draw Demo", 400, 400);
+    lv::X11Display display("Canvas Draw Demo", 400, 400, &lv::cursor_arrow);
 
     // Create demo
     static CanvasDrawDemo demo;

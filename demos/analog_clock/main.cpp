@@ -6,13 +6,14 @@
  */
 
 #include <lv/lv.hpp>
+#include <lv/assets/cursor.hpp>
 #include "analog_clock.hpp"
 
 int main() {
     lv::init();
 
 #if LV_USE_X11
-    lv::X11Display display("Analog Clock Demo", 390, 390);
+    lv::X11Display display("Analog Clock Demo", 390, 390, &lv::cursor_arrow);
 #elif LV_USE_SDL
     lv::SDLDisplay display(390, 390);
 #else

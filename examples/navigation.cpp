@@ -12,6 +12,7 @@
  */
 
 #include <lv/lv.hpp>
+#include <lv/assets/cursor.hpp>
 
 class NavigationDemo {
     lv::Navigator m_nav;
@@ -251,7 +252,7 @@ int main() {
     lv::init();
 
 #if LV_USE_X11
-    lv::X11Display display("Navigation Demo", 480, 480);
+    lv::X11Display display("Navigation Demo", 480, 480, &lv::cursor_arrow);
 #elif LV_USE_SDL
     lv::SDLDisplay display(480, 480);
 #else

@@ -11,6 +11,7 @@
  */
 
 #include <lv/lv.hpp>
+#include <lv/assets/cursor.hpp>
 
 static lv::Color get_color(int index) {
     static const uint32_t color_hexes[] = {
@@ -31,7 +32,7 @@ int main() {
     lv::init();
 
 #if LV_USE_X11
-    lv::X11Display display("Grid Layout Demo", 480, 580);
+    lv::X11Display display("Grid Layout Demo", 480, 580, &lv::cursor_arrow);
 #elif LV_USE_SDL
     lv::SDLDisplay display(480, 580);
 #else

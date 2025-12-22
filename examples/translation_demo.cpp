@@ -19,6 +19,7 @@
  */
 
 #include <lv/lv.hpp>
+#include <lv/assets/cursor.hpp>
 
 #if LV_USE_TRANSLATION
 
@@ -262,7 +263,7 @@ int main() {
     lv::init();
 
 #if LV_USE_X11
-    lv::X11Display display("Translation Demo", 400, 480);
+    lv::X11Display display("Translation Demo", 400, 480, &lv::cursor_arrow);
 #elif LV_USE_SDL
     lv::SDLDisplay display(400, 480);
 #else

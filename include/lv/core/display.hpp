@@ -68,12 +68,24 @@ public:
  * // ... create UI ...
  * lv::run();
  * @endcode
+ *
+ * With custom mouse cursor:
+ * @code
+ * LV_IMAGE_DECLARE(my_cursor);
+ * lv::X11Display display("My App", 800, 480, &my_cursor);
+ * @endcode
  */
 class X11Display : public Display {
 public:
-    X11Display(const char* title, int32_t width, int32_t height)
+    /// Create X11 window with optional mouse cursor image
+    /// @param title Window title
+    /// @param width Window width in pixels
+    /// @param height Window height in pixels
+    /// @param cursor Optional cursor image (nullptr = no visible cursor)
+    X11Display(const char* title, int32_t width, int32_t height,
+               const lv_image_dsc_t* cursor = nullptr)
         : Display(lv_x11_window_create(title, width, height)) {
-        lv_x11_inputs_create(get(), nullptr);
+        lv_x11_inputs_create(get(), cursor);
     }
 };
 #endif

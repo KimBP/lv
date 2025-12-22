@@ -7,6 +7,7 @@
  */
 
 #include <lv/lv.hpp>
+#include <lv/assets/cursor.hpp>
 #include "ebike_demo.hpp"
 
 static ebike::EbikeDemo demo;
@@ -16,7 +17,7 @@ int main() {
 
     // Create display based on available backend
 #if LV_USE_X11
-    lv::X11Display display("E-Bike Demo (C++ Port)", 480, 320);
+    lv::X11Display display("E-Bike Demo (C++ Port)", 480, 320, &lv::cursor_arrow);
 #elif LV_USE_SDL
     lv::SDLDisplay display(480, 320);
 #else

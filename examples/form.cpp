@@ -10,6 +10,7 @@
  */
 
 #include <lv/lv.hpp>
+#include <lv/assets/cursor.hpp>
 #include <cstring>
 
 // Simple validation
@@ -148,7 +149,7 @@ int main() {
     lv::init();
 
 #if LV_USE_X11
-    lv::X11Display display("Form Demo", 400, 580);
+    lv::X11Display display("Form Demo", 400, 580, &lv::cursor_arrow);
 #elif LV_USE_SDL
     lv::SDLDisplay display(400, 580);
 #else

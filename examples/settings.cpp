@@ -10,6 +10,7 @@
  */
 
 #include <lv/lv.hpp>
+#include <lv/assets/cursor.hpp>
 
 // ==================== Setting Row Helper ====================
 
@@ -163,7 +164,7 @@ int main() {
     lv::init();
 
 #if LV_USE_X11
-    lv::X11Display display("Settings Example", 400, 600);
+    lv::X11Display display("Settings Example", 400, 600, &lv::cursor_arrow);
 #elif LV_USE_SDL
     lv::SDLDisplay display(400, 600);
 #else

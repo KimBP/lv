@@ -28,7 +28,7 @@
 /*====================
    HAL SETTINGS
  *====================*/
-#define LV_DEF_REFR_PERIOD  33
+#define LV_DEF_REFR_PERIOD  16      /* ~60 FPS for smoother cursor */
 #define LV_DPI_DEF 130
 
 /*=================

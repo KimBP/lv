@@ -4,6 +4,7 @@
  */
 
 #include <lv/lv.hpp>
+#include <lv/assets/cursor.hpp>
 #include "smartwatch_demo.hpp"
 #include "smartwatch_gestures.hpp"
 
@@ -14,7 +15,7 @@ int main() {
 
     // Create display based on available backend (384x384 for smartwatch)
 #if LV_USE_X11
-    lv::X11Display display("Smartwatch Demo (C++ Port)", smartwatch::SCREEN_SIZE, smartwatch::SCREEN_SIZE);
+    lv::X11Display display("Smartwatch Demo (C++ Port)", smartwatch::SCREEN_SIZE, smartwatch::SCREEN_SIZE, &lv::cursor_arrow);
 #elif LV_USE_SDL
     lv::SDLDisplay display(smartwatch::SCREEN_SIZE, smartwatch::SCREEN_SIZE);
 #else

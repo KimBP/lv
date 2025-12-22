@@ -9,6 +9,7 @@
  */
 
 #include <lv/lv.hpp>
+#include <lv/assets/cursor.hpp>
 #include <cmath>
 #include <cstdlib>
 #include <memory>
@@ -166,7 +167,7 @@ int main() {
     lv::init();
 
 #if LV_USE_X11
-    lv::X11Display display("Chart Demo", 480, 420);
+    lv::X11Display display("Chart Demo", 480, 420, &lv::cursor_arrow);
 #elif LV_USE_SDL
     lv::SDLDisplay display(480, 420);
 #else

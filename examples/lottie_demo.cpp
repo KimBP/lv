@@ -16,6 +16,7 @@
  */
 
 #include <lv/lv.hpp>
+#include <lv/assets/cursor.hpp>
 
 #if LV_USE_LOTTIE
 
@@ -251,7 +252,7 @@ int main() {
     lv::init();
 
 #if LV_USE_X11
-    lv::X11Display display("Lottie Demo", 800, 480);
+    lv::X11Display display("Lottie Demo", 800, 480, &lv::cursor_arrow);
 #elif LV_USE_SDL
     lv::SDLDisplay display(800, 480);
 #else
