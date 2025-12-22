@@ -76,5 +76,7 @@
 // Image decoding
 #include "image_decoder.hpp" // ImageDecoderDsc, ImageDecoder
 
+// Vector graphics (requires LV_USE_VECTOR_GRAPHIC)
+#include "draw_vector.hpp"   // VectorPath, VectorDsc
+
 // Note: lv_draw_mask_rect_dsc_t is internal to LVGL (private header)
-// Note: lv_draw_vector API is large and not yet wrapped

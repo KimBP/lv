@@ -499,6 +499,60 @@ namespace kRadius {
 }
 
 // ============================================================================
+// Color Format
+// ============================================================================
+
+namespace kColorFormat {
+    // Unknown/special
+    constexpr auto unknown            = LV_COLOR_FORMAT_UNKNOWN;
+    constexpr auto raw                = LV_COLOR_FORMAT_RAW;
+    constexpr auto raw_alpha          = LV_COLOR_FORMAT_RAW_ALPHA;
+
+    // Grayscale / Indexed
+    constexpr auto L8                 = LV_COLOR_FORMAT_L8;
+    constexpr auto I1                 = LV_COLOR_FORMAT_I1;
+    constexpr auto I2                 = LV_COLOR_FORMAT_I2;
+    constexpr auto I4                 = LV_COLOR_FORMAT_I4;
+    constexpr auto I8                 = LV_COLOR_FORMAT_I8;
+
+    // Alpha only
+    constexpr auto A1                 = LV_COLOR_FORMAT_A1;
+    constexpr auto A2                 = LV_COLOR_FORMAT_A2;
+    constexpr auto A4                 = LV_COLOR_FORMAT_A4;
+    constexpr auto A8                 = LV_COLOR_FORMAT_A8;
+    constexpr auto AL88               = LV_COLOR_FORMAT_AL88;
+
+    // RGB formats
+    constexpr auto RGB565             = LV_COLOR_FORMAT_RGB565;
+    constexpr auto RGB565_swapped     = LV_COLOR_FORMAT_RGB565_SWAPPED;
+    constexpr auto RGB565A8           = LV_COLOR_FORMAT_RGB565A8;
+    constexpr auto RGB888             = LV_COLOR_FORMAT_RGB888;
+
+    // ARGB formats (most common)
+    constexpr auto ARGB8565           = LV_COLOR_FORMAT_ARGB8565;
+    constexpr auto ARGB8888           = LV_COLOR_FORMAT_ARGB8888;
+    constexpr auto XRGB8888           = LV_COLOR_FORMAT_XRGB8888;
+    constexpr auto ARGB8888_premult   = LV_COLOR_FORMAT_ARGB8888_PREMULTIPLIED;
+    constexpr auto ARGB1555           = LV_COLOR_FORMAT_ARGB1555;
+    constexpr auto ARGB4444           = LV_COLOR_FORMAT_ARGB4444;
+    constexpr auto ARGB2222           = LV_COLOR_FORMAT_ARGB2222;
+
+    // YUV formats
+    constexpr auto I420               = LV_COLOR_FORMAT_I420;
+    constexpr auto I422               = LV_COLOR_FORMAT_I422;
+    constexpr auto I444               = LV_COLOR_FORMAT_I444;
+    constexpr auto I400               = LV_COLOR_FORMAT_I400;
+    constexpr auto NV21               = LV_COLOR_FORMAT_NV21;
+    constexpr auto NV12               = LV_COLOR_FORMAT_NV12;
+    constexpr auto YUY2               = LV_COLOR_FORMAT_YUY2;
+    constexpr auto UYVY               = LV_COLOR_FORMAT_UYVY;
+
+    // Native (depends on LV_COLOR_DEPTH)
+    constexpr auto native             = LV_COLOR_FORMAT_NATIVE;
+    constexpr auto native_alpha       = LV_COLOR_FORMAT_NATIVE_WITH_ALPHA;
+}
+
+// ============================================================================
 // Coordinate helpers
 // ============================================================================
 
