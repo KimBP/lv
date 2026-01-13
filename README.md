@@ -28,6 +28,7 @@ int main() {
 - **Modern C++20** - Concepts, `[[nodiscard]]`, `noexcept`, no exceptions
 - **Header-only** - Easy integration, just add to include path
 - **35 widgets wrapped** - Full coverage of LVGL widget set
+- **UI automation ready** - Built-in `name()` for widget identification in testing and debugging
 
 ## Example: Counter App
 

@@ -24,6 +24,15 @@ struct wrap_t {};
 /// Usage: auto box = lv::Box(lv::wrap, existing_ptr);
 inline constexpr wrap_t wrap{};
 
+// ==================== Feature Detection ====================
+
+/// Compile-time check for object naming support (for UI automation)
+#ifdef LV_USE_OBJ_NAME
+inline constexpr bool has_obj_name = LV_USE_OBJ_NAME;
+#else
+inline constexpr bool has_obj_name = false;
+#endif
+
 // ==================== Symbol Constants ====================
 
 namespace symbol {
@@ -652,6 +661,26 @@ public:
     Derived& refresh_ext_draw_size() noexcept {
         lv_obj_refresh_ext_draw_size(obj());
         return *static_cast<Derived*>(this);
+    }
+
+    // ==================== Object Naming ====================
+
+    /// Set object name (requires LV_USE_OBJ_NAME in lv_conf.h)
+    /// Useful for widget identification in UI automation and debugging
+    Derived& name([[maybe_unused]] const char* name) noexcept {
+        if constexpr (has_obj_name) {
+            lv_obj_set_name(obj(), name);
+        }
+        return *static_cast<Derived*>(this);
+    }
+
+    /// Get object name (returns nullptr if not set or LV_USE_OBJ_NAME is disabled)
+    [[nodiscard]] const char* get_name() const noexcept {
+        if constexpr (has_obj_name) {
+            return lv_obj_get_name(obj());
+        } else {
+            return nullptr;
+        }
     }
 };
 

@@ -13,6 +13,7 @@ This guide explains the C++ wrapper API for LVGL and how it differs from the C A
 7. [Events](#events)
 8. [Object Wrapping](#object-wrapping)
 9. [Common Patterns](#common-patterns)
+10. [UI Automation](#ui-automation)
 
 ---
 
@@ -461,6 +462,83 @@ public:
     }
 };
 ```
+
+---
+
+## UI Automation
+
+The C++ wrapper provides built-in support for object naming through the `name()` method, wrapping LVGL's `lv_obj_set_name()` / `lv_obj_get_name()`.
+
+### Prerequisites
+
+Enable object naming in `lv_conf.h`:
+```c
+#define LV_USE_OBJ_NAME 1
+```
+
+When disabled, `name()` calls are no-ops with zero overhead (compile-time eliminated via `if constexpr`).
+
+### Setting Object Names
+
+Use `name()` to assign identifiers to widgets for automation and debugging:
+
+```cpp
+// Widgets with visible text are usually auto-identifiable by their content
+lv::Button::create(parent)
+    .text("Login");  // Can be found by text content
+
+// Widgets without text need explicit names
+lv::Image::create(parent)
+    .src(&icon_settings)
+    .name("settings_icon");
+
+lv::Slider::create(parent)
+    .range(0, 100)
+    .value(50)
+    .name("volume_slider");
+
+lv::Arc::create(parent)
+    .rotation(270)
+    .bg_angles(0, 360)
+    .name("progress_arc");
+```
+
+### C API Comparison
+
+| C API | C++ API |
+|-------|---------|
+| `lv_obj_set_name(obj, "id")` | `obj.name("id")` |
+| `lv_obj_get_name(obj)` | `obj.get_name()` |
+
+### Methods
+
+| Method | Description |
+|--------|-------------|
+| `.name(str)` | Set object name (returns `*this` for chaining) |
+| `.get_name()` | Get object name (returns `nullptr` if not set) |
+
+### Feature Detection
+
+The `lv::has_obj_name` compile-time constant indicates whether object naming is enabled:
+
+```cpp
+if constexpr (lv::has_obj_name) {
+    // Object naming is available
+}
+```
+
+### When to Use
+
+| Widget Type | Needs `name()`? | Reason |
+|-------------|-----------------|--------|
+| Button with text | No | Identifiable by text content |
+| Label | No | Identifiable by text content |
+| Checkbox | No | Identifiable by text content |
+| Image | Yes | No text content |
+| Slider | Yes | No text content |
+| Arc/Gauge | Yes | No text content |
+| Canvas | Yes | No text content |
+| Identical siblings | Yes | Disambiguate multiple widgets of same type |
 
 ---
 
