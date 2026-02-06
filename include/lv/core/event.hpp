@@ -98,7 +98,7 @@ class Event {
 public:
     // ==================== Constructors ====================
 
-    constexpr Event(lv_event_t* e) noexcept : m_event(e) {}
+    constexpr explicit Event(lv_event_t* e) noexcept : m_event(e) {}
 
     /// Get raw pointer for C API interop
     [[nodiscard]] constexpr lv_event_t* get() const noexcept { return m_event; }
@@ -455,6 +455,7 @@ public:
      */
     template<auto MemFn, typename T>
         requires std::is_member_function_pointer_v<decltype(MemFn)>
+    [[deprecated("Use on() instead — it auto-detects void() signatures")]]
     Derived& on_simple(lv_event_code_t code, T* instance) noexcept {
         using Trampoline = detail::MemberTrampolineNoArg<MemFn, T>;
         lv_obj_add_event_cb(obj(), &Trampoline::callback, code, instance);
@@ -467,6 +468,28 @@ public:
     [[deprecated("Use on_simple() instead of on_event_simple()")]]
     Derived& on_event_simple(lv_event_code_t code, T* instance) noexcept {
         return on_simple<MemFn>(code, instance);
+    }
+
+    // ==================== Removal ====================
+
+    /// Remove callback descriptor by index
+    bool remove_event(uint32_t index) noexcept {
+        return lv_obj_remove_event(obj(), index);
+    }
+
+    /// Remove a specific event descriptor
+    bool remove_event_dsc(lv_event_dsc_t* dsc) noexcept {
+        return lv_obj_remove_event_dsc(obj(), dsc);
+    }
+
+    /// Remove all callbacks matching event callback function
+    uint32_t remove_event_cb(lv_event_cb_t cb) noexcept {
+        return lv_obj_remove_event_cb(obj(), cb);
+    }
+
+    /// Remove callbacks matching event callback function and user_data
+    uint32_t remove_event_cb(lv_event_cb_t cb, void* user_data) noexcept {
+        return lv_obj_remove_event_cb_with_user_data(obj(), cb, user_data);
     }
 
     // ==================== Convenience Methods ====================

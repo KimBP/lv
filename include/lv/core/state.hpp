@@ -277,9 +277,6 @@ static_assert(sizeof(BoolState) <= sizeof(lv_subject_t) + sizeof(bool) + alignof
 static_assert(sizeof(ColorState) <= sizeof(lv_subject_t) + sizeof(lv_color_t) + alignof(lv_subject_t),
     "ColorState should have minimal overhead over lv_subject_t + value");
 
-
-// ==================== Label Binding Implementation ====================
-
 // ==================== Observer Helper Functions ====================
 
 /// Get target object from observer (for use in observer callbacks)
@@ -323,24 +320,6 @@ template<typename T>
 [[nodiscard]] inline T* subject_get_pointer(lv_subject_t* subject) noexcept {
     return const_cast<T*>(static_cast<const T*>(lv_subject_get_pointer(subject)));
 }
-
-} // namespace lv
-
-
-// Include binding implementation after State is defined
-#include "../widgets/label.hpp"
-
-namespace lv {
-
-#if LV_USE_OBSERVER
-/// Implementation of Label::bind_text for State<T>
-template<typename T>
-    requires std::is_integral_v<T>
-Label& Label::bind_text(State<T>& state, const char* fmt) noexcept {
-    lv_label_bind_text(m_obj, state.subject(), fmt);
-    return *this;
-}
-#endif
 
 } // namespace lv
 

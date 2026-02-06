@@ -39,9 +39,6 @@ public:
     }
 
     /// Wrap existing object as flex container (for wrapping raw pointers)
-    struct wrap_t {};
-    static constexpr wrap_t wrap{};
-
     Flex(wrap_t, lv_obj_t* obj) noexcept
         : ObjectView(obj) {}
 
@@ -176,82 +173,8 @@ public:
         return *this;
     }
 
-    // ==================== Size ====================
-
-    /// Set size in pixels
-    Flex& size(int32_t w, int32_t h) noexcept {
-        lv_obj_set_size(m_obj, w, h);
-        return *this;
-    }
-
-    /// Set width in pixels
-    Flex& width(int32_t w) noexcept {
-        lv_obj_set_width(m_obj, w);
-        return *this;
-    }
-
-    /// Set height in pixels
-    Flex& height(int32_t h) noexcept {
-        lv_obj_set_height(m_obj, h);
-        return *this;
-    }
-
-    /// Size to content (default)
-    Flex& size_content() noexcept {
-        lv_obj_set_size(m_obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
-        return *this;
-    }
-
-    /// Fill parent width
-    Flex& fill_width() noexcept {
-        lv_obj_set_width(m_obj, LV_PCT(100));
-        return *this;
-    }
-
-    /// Fill parent height
-    Flex& fill_height() noexcept {
-        lv_obj_set_height(m_obj, LV_PCT(100));
-        return *this;
-    }
-
-    /// Fill parent (both dimensions)
-    Flex& fill() noexcept {
-        lv_obj_set_size(m_obj, LV_PCT(100), LV_PCT(100));
-        return *this;
-    }
-
-    /// Set width as percentage of parent
-    Flex& width_pct(int32_t pct) noexcept {
-        lv_obj_set_width(m_obj, LV_PCT(pct));
-        return *this;
-    }
-
-    /// Set height as percentage of parent
-    Flex& height_pct(int32_t pct) noexcept {
-        lv_obj_set_height(m_obj, LV_PCT(pct));
-        return *this;
-    }
-
-    // ==================== Scrolling ====================
-
-    /// Enable scrolling
-    Flex& scrollable(bool v = true) noexcept {
-        if (v) {
-            lv_obj_add_flag(m_obj, LV_OBJ_FLAG_SCROLLABLE);
-        } else {
-            lv_obj_remove_flag(m_obj, LV_OBJ_FLAG_SCROLLABLE);
-        }
-        return *this;
-    }
-
-    // ==================== Flex Child Properties ====================
-    // (Applied to this container when it's a child of another flex)
-
-    /// Set flex grow factor
-    Flex& grow(uint8_t g = 1) noexcept {
-        lv_obj_set_flex_grow(m_obj, g);
-        return *this;
-    }
+    // size(), width(), height(), fill(), scrollable(), and grow() are
+    // inherited from ObjectMixin<Flex>.
 };
 
 
@@ -269,7 +192,7 @@ public:
  * lv::Button(row).text("B");
  * @endcode
  */
-inline Flex hbox(ObjectView parent) {
+[[nodiscard]] inline Flex hbox(ObjectView parent) {
     return Flex(parent, LV_FLEX_FLOW_ROW);
 }
 
@@ -285,21 +208,21 @@ inline Flex hbox(ObjectView parent) {
  * lv::Button(col).text("Click");
  * @endcode
  */
-inline Flex vbox(ObjectView parent) {
+[[nodiscard]] inline Flex vbox(ObjectView parent) {
     return Flex(parent, LV_FLEX_FLOW_COLUMN);
 }
 
 /**
  * @brief Create a horizontal flex container with wrap
  */
-inline Flex hbox_wrap(ObjectView parent) {
+[[nodiscard]] inline Flex hbox_wrap(ObjectView parent) {
     return Flex(parent, LV_FLEX_FLOW_ROW_WRAP);
 }
 
 /**
  * @brief Create a vertical flex container with wrap
  */
-inline Flex vbox_wrap(ObjectView parent) {
+[[nodiscard]] inline Flex vbox_wrap(ObjectView parent) {
     return Flex(parent, LV_FLEX_FLOW_COLUMN_WRAP);
 }
 

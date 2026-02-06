@@ -13,37 +13,6 @@
 
 namespace lv {
 
-// ==================== Component User Data Wrapper ====================
-
-/**
- * @brief Internal wrapper for component user_data to avoid collisions
- *
- * This allows components to use user_data while still allowing
- * user code to attach additional data.
- *
- * Contains a magic tag to verify the user_data actually points to
- * ComponentData before casting (prevents crashes if child widgets
- * set unrelated user_data).
- */
-struct ComponentData {
-    /// Magic value to identify ComponentData (0x4C56434D = "LVCM" in ASCII)
-    static constexpr uint32_t MAGIC = 0x4C56434D;
-
-    uint32_t magic;      ///< Magic tag for verification
-    void* component;     ///< Pointer to Component instance
-    void* user_payload;  ///< Optional user-defined payload
-
-    constexpr ComponentData(void* comp) noexcept
-        : magic(MAGIC), component(comp), user_payload(nullptr) {}
-
-    /// Check if this is a valid ComponentData
-    [[nodiscard]] static bool is_valid(void* ptr) noexcept {
-        if (!ptr) return false;
-        auto* data = static_cast<ComponentData*>(ptr);
-        return data->magic == MAGIC;
-    }
-};
-
 /**
  * @brief CRTP base class for UI components
  *
@@ -52,12 +21,17 @@ struct ComponentData {
  *
  * Features:
  * - Zero virtual call overhead (CRTP static dispatch)
- * - Automatic 'this' pointer storage in root's user_data (via ComponentData)
+ * - Component lookup via event-descriptor scanning (no user_data collision)
  * - Mount/unmount lifecycle management
- * - User payload support without colliding with component pointer
+ * - user_data() on component roots is freely usable by application code
  *
- * Size: sizeof(void*) + sizeof(ComponentData)
- *       Typically 8 + 24 = 32 bytes on 64-bit (pointer + magic + component + payload)
+ * Size: sizeof(void*) = 8 bytes on 64-bit (just the root pointer)
+ *
+ * Ownership lookup: root_delete_cb is registered on every component root.
+ * Its callback address &Component<Derived>::root_delete_cb is unique per
+ * Derived type. owner_from_obj() scans event descriptors to find it and
+ * extracts the component pointer from the event's user_data. This avoids
+ * probing lv_obj_t::user_data entirely, eliminating UB.
  *
  * Usage:
  * @code
@@ -95,7 +69,45 @@ template<typename Derived>
 class Component {
 protected:
     lv_obj_t* m_root = nullptr;
-    ComponentData m_data{nullptr};  ///< Embedded data to avoid separate allocation
+
+private:
+    /// Delete-event hook: nulls m_root when LVGL deletes the root externally
+    /// (e.g. screen auto_del). Prevents double-delete in destructor/unmount.
+    static void root_delete_cb(lv_event_t* e) noexcept {
+        auto* derived = static_cast<Derived*>(lv_event_get_user_data(e));
+        if (!derived) return;
+
+        auto* self = static_cast<Component*>(derived);
+        if (self->m_root == lv_event_get_current_target_obj(e)) {
+            self->m_root = nullptr;
+        }
+    }
+
+    static void attach_root_delete_hook(lv_obj_t* root, Derived* owner) noexcept {
+        lv_obj_add_event_cb(root, &Component::root_delete_cb, LV_EVENT_DELETE, owner);
+    }
+
+    static void rebind_root_delete_hook(lv_obj_t* root, Derived* old_owner,
+                                        Derived* new_owner) noexcept {
+        lv_obj_remove_event_cb_with_user_data(root, &Component::root_delete_cb, old_owner);
+        attach_root_delete_hook(root, new_owner);
+    }
+
+    /// Scan event descriptors on obj for root_delete_cb; return owning Derived*.
+    /// The callback address &Component::root_delete_cb is unique per Derived type,
+    /// so this is type-safe. Uses only public, stable LVGL APIs.
+    static Derived* owner_from_obj(lv_obj_t* obj) noexcept {
+        if (!obj) return nullptr;
+        const uint32_t n = lv_obj_get_event_count(obj);
+        for (uint32_t i = 0; i < n; ++i) {
+            lv_event_dsc_t* d = lv_obj_get_event_dsc(obj, i);
+            if (!d) continue;
+            if (lv_event_dsc_get_cb(d) == &Component::root_delete_cb) {
+                return static_cast<Derived*>(lv_event_dsc_get_user_data(d));
+            }
+        }
+        return nullptr;
+    }
 
 public:
     Component() = default;
@@ -106,12 +118,12 @@ public:
 
     // Moveable
     Component(Component&& other) noexcept
-        : m_root(other.m_root), m_data(other.m_data) {
+        : m_root(other.m_root) {
         other.m_root = nullptr;
-        // Update user_data to point to our embedded data
         if (m_root) {
-            m_data.component = static_cast<Derived*>(this);
-            lv_obj_set_user_data(m_root, &m_data);
+            auto* old_owner = static_cast<Derived*>(&other);
+            auto* new_owner = static_cast<Derived*>(this);
+            rebind_root_delete_hook(m_root, old_owner, new_owner);
         }
     }
 
@@ -119,11 +131,11 @@ public:
         if (this != &other) {
             unmount();
             m_root = other.m_root;
-            m_data = other.m_data;
             other.m_root = nullptr;
             if (m_root) {
-                m_data.component = static_cast<Derived*>(this);
-                lv_obj_set_user_data(m_root, &m_data);
+                auto* old_owner = static_cast<Derived*>(&other);
+                auto* new_owner = static_cast<Derived*>(this);
+                rebind_root_delete_hook(m_root, old_owner, new_owner);
             }
         }
         return *this;
@@ -140,8 +152,8 @@ public:
      * @brief Mount the component to a parent
      *
      * Calls the derived class's build() method and stores the result.
-     * The component's 'this' pointer is stored in the root's user_data
-     * via ComponentData wrapper to avoid collisions with user payload.
+     * A delete-event hook is registered on the root to track external deletion.
+     * The root's user_data is not touched — it remains available for application use.
      *
      * @param parent The parent object (ObjectView)
      */
@@ -155,9 +167,7 @@ public:
         m_root = root.get();
 
         if (m_root) {
-            // Store component pointer in embedded data and attach to object
-            m_data.component = static_cast<Derived*>(this);
-            lv_obj_set_user_data(m_root, &m_data);
+            attach_root_delete_hook(m_root, static_cast<Derived*>(this));
 
             // Call optional lifecycle hook
             if constexpr (requires { static_cast<Derived*>(this)->on_mount(); }) {
@@ -173,13 +183,17 @@ public:
      */
     void unmount() {
         if (m_root) {
-            // Call optional lifecycle hook
+            // Call optional lifecycle hook.
+            // Note: the hook may delete m_root externally, which triggers
+            // root_delete_cb and nulls m_root. We must recheck afterward.
             if constexpr (requires { static_cast<Derived*>(this)->on_unmount(); }) {
                 static_cast<Derived*>(this)->on_unmount();
             }
 
-            lv_obj_delete(m_root);
-            m_root = nullptr;
+            if (m_root) {
+                lv_obj_delete(m_root);
+                m_root = nullptr;
+            }
         }
     }
 
@@ -229,71 +243,14 @@ public:
         return ObjectView(m_root);
     }
 
-    // ==================== User Payload (avoids user_data collision) ====================
-
-    /**
-     * @brief Set user-defined payload data
-     *
-     * This allows attaching custom data to the component without
-     * conflicting with the internal component pointer storage.
-     *
-     * IMPORTANT: Always use this instead of root().user_data() on components!
-     * Calling user_data() directly on the root object will overwrite the
-     * ComponentData pointer and break from_event()/from_obj().
-     *
-     * @param payload Pointer to user data
-     */
-    void set_user_payload(void* payload) noexcept {
-        m_data.user_payload = payload;
-    }
-
-    /**
-     * @brief Get user-defined payload data
-     */
-    [[nodiscard]] void* get_user_payload() const noexcept {
-        return m_data.user_payload;
-    }
-
-    /**
-     * @brief Get user payload as typed pointer
-     */
-    template<typename T>
-    [[nodiscard]] T* get_user_payload_as() const noexcept {
-        return static_cast<T*>(m_data.user_payload);
-    }
-
-    /**
-     * @brief Set payload on a child widget safely
-     *
-     * Use this to set user_data on child widgets within the component.
-     * This is safe because only the root has ComponentData.
-     *
-     * @param child Child widget (must not be the root)
-     * @param data User data pointer
-     */
-    void set_child_user_data(ObjectView child, void* data) noexcept {
-        // Safety check: don't allow setting on root
-        if (child.get() != m_root) {
-            lv_obj_set_user_data(child.get(), data);
-        }
-    }
-
-    /**
-     * @brief Get payload from a child widget
-     */
-    template<typename T>
-    [[nodiscard]] static T* get_child_user_data(ObjectView child) noexcept {
-        return static_cast<T*>(lv_obj_get_user_data(child.get()));
-    }
-
     // ==================== Static Helpers ====================
 
     /**
      * @brief Get component instance from an event
      *
-     * Retrieves the component pointer from the root object's user_data.
-     * Use this in event callbacks to get back to the component.
-     * Walks up the widget tree to find the component root.
+     * Walks up the widget tree scanning event descriptors on each node
+     * for the root_delete_cb unique to this Component<Derived> type.
+     * O(events) per node, type-safe (only matches this specific Derived type).
      *
      * @code
      * void handle_event(lv_event_t* e) {
@@ -302,57 +259,100 @@ public:
      * }
      * @endcode
      *
-     * @return Pointer to component, or nullptr if not found or invalid
+     * @return Pointer to component, or nullptr if not found
      */
     [[nodiscard]] static Derived* from_event(lv_event_t* e) noexcept {
         lv_obj_t* target = lv_event_get_current_target_obj(e);
-        // Walk up to find root with valid ComponentData
         while (target) {
-            void* data = lv_obj_get_user_data(target);
-            if (ComponentData::is_valid(data)) {
-                auto* comp_data = static_cast<ComponentData*>(data);
-                return static_cast<Derived*>(comp_data->component);
-            }
+            Derived* owner = owner_from_obj(target);
+            if (owner) return owner;
             target = lv_obj_get_parent(target);
         }
         return nullptr;
     }
 
     /**
-     * @brief Get component instance from an object's user_data
+     * @brief Get component instance from a component root object
      *
-     * @return Pointer to component, or nullptr if user_data is not ComponentData
+     * @return Pointer to component, or nullptr if object is not a component root
      */
     [[nodiscard]] static Derived* from_obj(ObjectView obj) noexcept {
-        void* data = lv_obj_get_user_data(obj);
-        if (ComponentData::is_valid(data)) {
-            auto* comp_data = static_cast<ComponentData*>(data);
-            return static_cast<Derived*>(comp_data->component);
-        }
-        return nullptr;
+        return owner_from_obj(obj.get());
     }
 };
 
+namespace detail {
+    struct SizeCheckComponent : Component<SizeCheckComponent> {
+        ObjectView build(ObjectView) { return ObjectView(nullptr); }
+    };
+    static_assert(sizeof(SizeCheckComponent) == sizeof(void*),
+                  "Component should be exactly one pointer (m_root)");
+}
 
 /**
  * @brief Mixin for components that need screen integration
  *
  * Use this when the component represents a full screen.
+ * Tracks the screen object separately from m_root to prevent leaks.
+ *
+ * Non-moveable: screen-level components manage LVGL screen lifetime
+ * and should not be moved.
+ *
+ * Destruction order:
+ *   ~ScreenComponent calls unmount() (fires on_unmount, deletes m_root),
+ *   then deletes m_screen. ~Component runs unmount() again (m_root==nullptr, no-op).
  */
 template<typename Derived>
 class ScreenComponent : public Component<Derived> {
+    lv_obj_t* m_screen = nullptr;
+
+    static void screen_delete_cb(lv_event_t* e) noexcept {
+        auto* self = static_cast<ScreenComponent*>(
+            static_cast<Derived*>(lv_event_get_user_data(e)));
+        if (self->m_screen == lv_event_get_current_target_obj(e)) {
+            self->m_screen = nullptr;
+        }
+    }
+
 public:
-    using Component<Derived>::Component;
+    ScreenComponent() = default;
+    ScreenComponent(ScreenComponent&&) = delete;
+    ScreenComponent& operator=(ScreenComponent&&) = delete;
+
+    ~ScreenComponent() {
+        // unmount() fires on_unmount() lifecycle hook and deletes m_root.
+        // Then we clean up the screen object itself.
+        this->unmount();
+        if (m_screen) {
+            lv_obj_delete(m_screen);
+            m_screen = nullptr;
+        }
+    }
 
     /**
      * @brief Mount as a new screen
      *
      * Creates a new screen object and mounts the component to it.
+     * Any previously mounted screen is unmounted first.
      */
     ObjectView mount_screen() {
-        lv_obj_t* screen = lv_obj_create(nullptr);
-        this->mount(ObjectView(screen));
-        return ObjectView(screen);
+        unmount_screen();
+        m_screen = lv_obj_create(nullptr);
+        lv_obj_add_event_cb(m_screen, &ScreenComponent::screen_delete_cb,
+                           LV_EVENT_DELETE, static_cast<Derived*>(this));
+        this->mount(ObjectView(m_screen));
+        return ObjectView(m_screen);
+    }
+
+    /**
+     * @brief Unmount screen and clean up both root and screen objects
+     */
+    void unmount_screen() {
+        this->unmount();   // deletes m_root (child)
+        if (m_screen) {
+            lv_obj_delete(m_screen);
+            m_screen = nullptr;
+        }
     }
 
     /**
@@ -370,6 +370,11 @@ public:
                               uint32_t delay = 0, bool auto_del = true) {
         ObjectView screen = mount_screen();
         lv_screen_load_anim(screen, anim, time, delay, auto_del);
+    }
+
+    /// Get the screen object
+    [[nodiscard]] ObjectView screen() const noexcept {
+        return ObjectView(m_screen);
     }
 };
 

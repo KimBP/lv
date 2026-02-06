@@ -417,7 +417,7 @@ public:
 
     // ==================== Control ====================
 
-    /// Start the animation
+    /// Start the animation (returns handle for optional pause/resume/delete)
     lv_anim_t* start() noexcept {
         return lv_anim_start(&m_anim);
     }
@@ -426,7 +426,7 @@ public:
 // ==================== Object Animation Helpers ====================
 
 /// Animate object X position
-inline Anim anim_x(ObjectView obj, int32_t start, int32_t end) {
+[[nodiscard]] inline Anim anim_x(ObjectView obj, int32_t start, int32_t end) {
     return Anim()
         .var(obj)
         .exec([](void* o, int32_t v) { lv_obj_set_x(static_cast<lv_obj_t*>(o), v); })
@@ -434,7 +434,7 @@ inline Anim anim_x(ObjectView obj, int32_t start, int32_t end) {
 }
 
 /// Animate object Y position
-inline Anim anim_y(ObjectView obj, int32_t start, int32_t end) {
+[[nodiscard]] inline Anim anim_y(ObjectView obj, int32_t start, int32_t end) {
     return Anim()
         .var(obj)
         .exec([](void* o, int32_t v) { lv_obj_set_y(static_cast<lv_obj_t*>(o), v); })
@@ -442,7 +442,7 @@ inline Anim anim_y(ObjectView obj, int32_t start, int32_t end) {
 }
 
 /// Animate object width
-inline Anim anim_width(ObjectView obj, int32_t start, int32_t end) {
+[[nodiscard]] inline Anim anim_width(ObjectView obj, int32_t start, int32_t end) {
     return Anim()
         .var(obj)
         .exec([](void* o, int32_t v) { lv_obj_set_width(static_cast<lv_obj_t*>(o), v); })
@@ -450,7 +450,7 @@ inline Anim anim_width(ObjectView obj, int32_t start, int32_t end) {
 }
 
 /// Animate object height
-inline Anim anim_height(ObjectView obj, int32_t start, int32_t end) {
+[[nodiscard]] inline Anim anim_height(ObjectView obj, int32_t start, int32_t end) {
     return Anim()
         .var(obj)
         .exec([](void* o, int32_t v) { lv_obj_set_height(static_cast<lv_obj_t*>(o), v); })
@@ -458,7 +458,7 @@ inline Anim anim_height(ObjectView obj, int32_t start, int32_t end) {
 }
 
 /// Animate object opacity
-inline Anim anim_opa(ObjectView obj, lv_opa_t start, lv_opa_t end) {
+[[nodiscard]] inline Anim anim_opa(ObjectView obj, lv_opa_t start, lv_opa_t end) {
     return Anim()
         .var(obj)
         .exec([](void* o, int32_t v) { lv_obj_set_style_opa(static_cast<lv_obj_t*>(o), static_cast<lv_opa_t>(v), 0); })

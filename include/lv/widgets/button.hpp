@@ -25,6 +25,18 @@ class Button : public ObjectView,
                public ObjectMixin<Button>,
                public EventMixin<Button>,
                public StyleMixin<Button> {
+private:
+    [[nodiscard]] static lv_obj_t* first_label_child(lv_obj_t* parent) noexcept {
+        const uint32_t child_count = lv_obj_get_child_count(parent);
+        for (uint32_t i = 0; i < child_count; ++i) {
+            lv_obj_t* child = lv_obj_get_child(parent, static_cast<int32_t>(i));
+            if (child && lv_obj_check_type(child, &lv_label_class)) {
+                return child;
+            }
+        }
+        return nullptr;
+    }
+
 public:
     /// Default constructor (null button)
     constexpr Button() noexcept : ObjectView(nullptr) {}
@@ -47,33 +59,39 @@ public:
 
     // ==================== Text ====================
 
-    /// Add a centered text label to the button
+    /// Set centered text label on the button (creates label on first call)
     Button& text(const char* txt) noexcept {
-        lv_obj_t* lbl = lv_label_create(m_obj);
+        lv_obj_t* lbl = first_label_child(m_obj);
+        if (!lbl) {
+            lbl = lv_label_create(m_obj);
+            lv_obj_center(lbl);
+        }
         lv_label_set_text(lbl, txt);
-        lv_obj_center(lbl);
         return *this;
     }
 
-    /// Add a centered label with format
+    /// Set centered label text with format (creates label on first call)
     template<typename... Args>
     Button& text_fmt(const char* fmt, Args... args) noexcept {
-        lv_obj_t* lbl = lv_label_create(m_obj);
+        lv_obj_t* lbl = first_label_child(m_obj);
+        if (!lbl) {
+            lbl = lv_label_create(m_obj);
+            lv_obj_center(lbl);
+        }
         lv_label_set_text_fmt(lbl, fmt, args...);
-        lv_obj_center(lbl);
         return *this;
     }
 
     /// Get the button's label (first child label)
     [[nodiscard]] Label get_label() const noexcept {
-        return Label(wrap, lv_obj_get_child(m_obj, 0));
+        return Label(wrap, first_label_child(m_obj));
     }
 
     /// Set label text (finds first label child)
     Button& set_text(const char* txt) noexcept {
-        lv_obj_t* child = lv_obj_get_child(m_obj, 0);
-        if (child && lv_obj_check_type(child, &lv_label_class)) {
-            lv_label_set_text(child, txt);
+        lv_obj_t* lbl = first_label_child(m_obj);
+        if (lbl) {
+            lv_label_set_text(lbl, txt);
         }
         return *this;
     }

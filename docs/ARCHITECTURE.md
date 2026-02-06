@@ -612,59 +612,42 @@ struct MemberTrampoline {
 
 The member function pointer `MemFn` is a template parameter, resolved at compile-time with zero runtime storage.
 
-### ComponentData and Magic Tags
+### Component Ownership via Event Descriptors
 
-Components store their `this` pointer in the root widget's `user_data` using a `ComponentData` wrapper with a magic tag for safe identification:
+Components are identified through their delete-event hook rather than `user_data`.
+Every component root has `root_delete_cb` registered via `lv_obj_add_event_cb`.
+The callback address `&Component<Derived>::root_delete_cb` is unique per `Derived`
+type (each template instantiation produces a distinct function). The component
+pointer is stored as the event's `user_data`.
 
-```cpp
-struct ComponentData {
-    static constexpr uint32_t MAGIC = 0x4C56434D;  // "LVCM" in ASCII
-
-    uint32_t magic;      // Verification tag
-    void* component;     // Component's 'this' pointer
-    void* user_payload;  // User's custom data (no collision!)
-};
-```
-
-The magic value `0x4C56434D` spells "LVCM" (**LV** **C**omponent **M**agic) in ASCII, making it identifiable in memory dumps.
-
-This enables safe component lookup from event callbacks:
+To look up the owning component, `owner_from_obj()` scans event descriptors:
 
 ```cpp
-static Derived* from_event(lv_event_t* e) noexcept {
-    lv_obj_t* target = lv_event_get_current_target_obj(e);
-
-    while (target) {
-        void* data = lv_obj_get_user_data(target);
-        if (ComponentData::is_valid(data)) {
-            auto* comp_data = static_cast<ComponentData*>(data);
-            return static_cast<Derived*>(comp_data->component);
-        }
-        target = lv_obj_get_parent(target);
+static Derived* owner_from_obj(lv_obj_t* obj) noexcept {
+    if (!obj) return nullptr;
+    const uint32_t n = lv_obj_get_event_count(obj);
+    for (uint32_t i = 0; i < n; ++i) {
+        lv_event_dsc_t* d = lv_obj_get_event_dsc(obj, i);
+        if (!d) continue;
+        if (lv_event_dsc_get_cb(d) == &Component::root_delete_cb)
+            return static_cast<Derived*>(lv_event_dsc_get_user_data(d));
     }
     return nullptr;
 }
 ```
 
-### Component User Payload
+This approach:
+- **Eliminates UB**: no type-punning of arbitrary `user_data` pointers.
+- **Frees `user_data`**: `lv_obj_t::user_data` on component roots is available for normal use.
+- **Shrinks Component**: `sizeof(Component<T>) == sizeof(void*)` (8 bytes on 64-bit).
+- Uses only public, stable LVGL APIs (`lv_obj_get_event_count`, `lv_obj_get_event_dsc`,
+  `lv_event_dsc_get_cb`, `lv_event_dsc_get_user_data`).
 
-To store custom data without clobbering the ComponentData, use `set_user_payload()`:
+### Component Root user_data
 
-```cpp
-class MyComponent : public lv::Component<MyComponent> {
-    struct Context { int value; };
-    Context ctx{42};
-
-    lv::ObjectView build(lv::ObjectView parent) {
-        set_user_payload(&ctx);  // Safe: stores in ComponentData::user_payload
-        // ...
-    }
-
-    void later() {
-        auto* c = get_user_payload_as<Context>();
-    }
-};
-```
+Since components no longer occupy `user_data`, the root's `user_data` is freely
+available for application use. Use `lv_obj_set_user_data(root.get(), ptr)` to set it
+and `root().user_data_as<T>()` to retrieve it — no special payload API is needed.
 
 ---
 

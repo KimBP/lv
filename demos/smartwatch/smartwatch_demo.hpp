@@ -198,12 +198,12 @@ inline void SmartwatchDemo::create() {
 
     lv::Label::create(date_cont)
         .text("07/12")
-        .text_letter_space(1)
+        .letter_space(1)
         .text_font(&font_inter_regular_24);
 
     lv::Label::create(date_cont)
         .text("WED")
-        .text_letter_space(3)
+        .letter_space(3)
         .text_font(&font_inter_bold_24);
 
     // Weather icon

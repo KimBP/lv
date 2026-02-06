@@ -11,10 +11,12 @@
 #include "../core/style.hpp"
 #include "../core/string_utils.hpp"
 #include <string_view>
+#include <type_traits>
 
 namespace lv {
 
-// Forward declaration for state binding
+// Forward declaration – full definition in core/state.hpp.
+// bind_text() below requires State<T> to be complete at the point of instantiation.
 template<typename T> class State;
 
 /**
@@ -201,10 +203,10 @@ public:
         return *this;
     }
 
-    /// Set letter spacing (alias for text_letter_space naming)
+    /// @deprecated Use letter_space() instead
+    [[deprecated("Use letter_space() instead")]]
     Label& text_letter_space(int32_t space) noexcept {
-        lv_obj_set_style_text_letter_space(m_obj, space, 0);
-        return *this;
+        return letter_space(space);
     }
 
     /// Set line spacing
@@ -239,7 +241,10 @@ public:
     /// Bind to State<int>
     template<typename T>
         requires std::is_integral_v<T>
-    Label& bind_text(State<T>& state, const char* fmt = "%d") noexcept;
+    Label& bind_text(State<T>& state, const char* fmt = "%d") noexcept {
+        lv_label_bind_text(m_obj, state.subject(), fmt);
+        return *this;
+    }
 #endif
 };
 

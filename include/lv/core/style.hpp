@@ -54,7 +54,7 @@ public:
     }
 
     /// Destructor resets the style
-    ~Style() {
+    ~Style() noexcept {
         lv_style_reset(&m_style);
     }
 

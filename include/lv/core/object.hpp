@@ -111,7 +111,10 @@ public:
 
     // ==================== Common Object Operations ====================
 
-    /// Set user data pointer (zero-cost way to attach C++ object)
+    /// Set user data pointer
+    /// @deprecated Use ObjectMixin::user_data(void*) on widget types for fluent API,
+    ///             or lv_obj_set_user_data(obj.get(), ptr) for raw ObjectView.
+    [[deprecated("Use the widget's fluent .user_data(ptr) or lv_obj_set_user_data() directly")]]
     ObjectView& user_data(void* data) noexcept {
         lv_obj_set_user_data(m_obj, data);
         return *this;
@@ -201,7 +204,7 @@ public:
         : ObjectView(obj) {}
 
     /// Destructor deletes the LVGL object
-    ~Object() {
+    ~Object() noexcept {
         if (m_obj) {
             lv_obj_delete(m_obj);
         }
@@ -449,11 +452,9 @@ public:
     /**
      * @brief Set user data pointer
      *
-     * WARNING: If this object is a Component root, calling user_data() will
-     * overwrite the ComponentData pointer and break Component::from_event().
-     * For components, use Component::set_user_payload() instead.
-     *
-     * @see Component::set_user_payload() for safe user data on component roots
+     * Safe to use on any object, including component roots.
+     * Components use event-descriptor scanning for ownership lookup
+     * and do not occupy user_data.
      */
     Derived& user_data(void* data) noexcept {
         lv_obj_set_user_data(obj(), data);
