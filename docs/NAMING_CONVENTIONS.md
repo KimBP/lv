@@ -168,8 +168,8 @@ label.text("Hello")
 | Class name | `PascalCase` | `Chart`, `Button`, `Label` |
 | Type alias | `PascalCase` | `Color`, `Event`, `Opacity` |
 | Nested struct | `PascalCase` | `Chart::Type`, `Grid::Align` |
-| Global struct | `PascalCase` | `ObjState`, `Part`, `Flag` |
-| Constant value | `snake_case` | `Type::line`, `ObjState::checked` |
+| Global struct | `kPascalCase` | `kState`, `kPart`, `kFlag` |
+| Constant value | `snake_case` | `Type::line`, `kState::checked` |
 | Function | `snake_case` | `fr()`, `hex()`, `rgb()` |
 | Namespace | `snake_case` | `colors`, `symbol`, `fonts` |
 | Member method | `snake_case` | `bg_color()`, `fill_width()` |

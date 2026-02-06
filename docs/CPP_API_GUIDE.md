@@ -609,27 +609,27 @@ panel.width(lv::pct(80))
 
 | Namespace | Contains |
 |-----------|----------|
-| `lv::Align` | Alignment constants (center, top_left, etc.) |
-| `lv::Part` | Object parts (main, indicator, knob, etc.) |
-| `lv::State` | Object states (pressed, checked, disabled, etc.) |
-| `lv::Opa` | Opacity values (_0 to _100, transp, cover) |
-| `lv::Dir` | Directions (left, right, top, bottom, hor, ver) |
-| `lv::Flex::Flow` | Flex flow modes (row, column, wrap variants) |
-| `lv::Flex::Align` | Flex alignment (start, end, center, space_*) |
-| `lv::Grid::Align` | Grid alignment |
-| `lv::Text::Align` | Text alignment (left, center, right) |
-| `lv::Event` | Event types (clicked, pressed, value_changed, etc.) |
-| `lv::Arc::Mode` | Arc modes (normal, symmetrical, reverse) |
-| `lv::Bar::Mode` | Bar modes (normal, symmetrical, range) |
-| `lv::Slider::Mode` | Slider modes |
-| `lv::Chart::Type` | Chart types (line, bar, scatter) |
-| `lv::Chart::Axis` | Chart axes |
-| `lv::Label::LongMode` | Label long modes (wrap, dot, scroll, clip) |
-| `lv::Grad::Dir` | Gradient directions (hor, ver) |
-| `lv::Border::Side` | Border sides |
-| `lv::Scrollbar::Mode` | Scrollbar modes |
-| `lv::Blend::Mode` | Blend modes |
-| `lv::Size` | Size helpers (content, pct()) |
+| `lv::kAlign` | Alignment constants (center, top_left, etc.) |
+| `lv::kPart` | Object parts (main, indicator, knob, etc.) |
+| `lv::kState` | Object states (pressed, checked, disabled, etc.) |
+| `lv::kOpa` | Opacity values (_0 to _100, transp, cover) |
+| `lv::kDir` | Directions (left, right, top, bottom, hor, ver) |
+| `lv::kFlexFlow` | Flex flow modes (row, column, wrap variants) |
+| `lv::kFlexAlign` | Flex alignment (start, end, center, space_*) |
+| `lv::kGridAlign` | Grid alignment |
+| `lv::kTextAlign` | Text alignment (left, center, right) |
+| `lv::kEvent` | Event types (clicked, pressed, value_changed, etc.) |
+| `lv::kArcMode` | Arc modes (normal, symmetrical, reverse) |
+| `lv::kBarMode` | Bar modes (normal, symmetrical, range) |
+| `lv::kSliderMode` | Slider modes |
+| `lv::kChartType` | Chart types (line, bar, scatter) |
+| `lv::kChartAxis` | Chart axes |
+| `lv::kLabelLongMode` | Label long modes (wrap, dot, scroll, clip) |
+| `lv::kGradDir` | Gradient directions (hor, ver) |
+| `lv::kBorderSide` | Border sides |
+| `lv::kScrollbarMode` | Scrollbar modes |
+| `lv::kBlendMode` | Blend modes |
+| `lv::kSize` | Size helpers (content, pct()) |
 
 ---
 

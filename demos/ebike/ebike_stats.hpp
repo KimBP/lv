@@ -136,6 +136,11 @@ private:
     }
 
     void create_data_cont(lv::ObjectView parent) {
+        // Reset stale pointers from previous page creation — the old widgets
+        // were deleted on page switch, so these would dangle.
+        s_left_arrow = nullptr;
+        s_right_arrow = nullptr;
+
         auto cont = lv::Box::create(parent)
             .size(lv::pct(100), lv::kSize::content)
             .bg_opa(lv::opa::transp)

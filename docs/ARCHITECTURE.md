@@ -355,12 +355,12 @@ lv::grid_cell(child).col(0).row(0).col_span(2);
 template<typename Derived>
 class Component {
 public:
-    void mount(ObjectView parent);
+    void mount(ObjectView parent);   // calls Derived::build() via CRTP
     void unmount();
 
 protected:
-    // Override in derived class
-    virtual ObjectView build(ObjectView parent) = 0;
+    lv_obj_t* m_root = nullptr;
+    // Derived must implement: ObjectView build(ObjectView parent);
 };
 ```
 
@@ -371,7 +371,7 @@ class CounterView : public lv::Component<CounterView> {
     lv::State<int> count{0};
 
 public:
-    lv::ObjectView build(lv::ObjectView parent) override {
+    lv::ObjectView build(lv::ObjectView parent) {
         auto root = lv::vbox(parent).padding(16).gap(8);
 
         lv::Label(root).bind_text(count, "Count: %d");
@@ -513,7 +513,7 @@ class MyApp : public lv::Component<MyApp> {
     lv::State<int> counter{0};
 
 public:
-    lv::ObjectView build(lv::ObjectView parent) override {
+    lv::ObjectView build(lv::ObjectView parent) {
         auto root = lv::vbox(parent)
             .fill()
             .padding(20)
