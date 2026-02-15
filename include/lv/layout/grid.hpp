@@ -23,6 +23,7 @@ namespace lv {
  * Size: sizeof(void*) - 4 or 8 bytes
  */
 class Grid : public ObjectView,
+             public ObjectMixin<Grid>,
              public EventMixin<Grid>,
              public StyleMixin<Grid> {
 public:
@@ -127,49 +128,8 @@ public:
         return *this;
     }
 
-    // ==================== Size ====================
-
-    /// Set size
-    Grid& size(int32_t w, int32_t h) noexcept {
-        lv_obj_set_size(m_obj, w, h);
-        return *this;
-    }
-
-    /// Set width
-    Grid& width(int32_t w) noexcept {
-        lv_obj_set_width(m_obj, w);
-        return *this;
-    }
-
-    /// Set height
-    Grid& height(int32_t h) noexcept {
-        lv_obj_set_height(m_obj, h);
-        return *this;
-    }
-
-    /// Size to content (default)
-    Grid& size_content() noexcept {
-        lv_obj_set_size(m_obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
-        return *this;
-    }
-
-    /// Fill parent width
-    Grid& fill_width() noexcept {
-        lv_obj_set_width(m_obj, LV_PCT(100));
-        return *this;
-    }
-
-    /// Fill parent height
-    Grid& fill_height() noexcept {
-        lv_obj_set_height(m_obj, LV_PCT(100));
-        return *this;
-    }
-
-    /// Fill parent (both dimensions)
-    Grid& fill() noexcept {
-        lv_obj_set_size(m_obj, LV_PCT(100), LV_PCT(100));
-        return *this;
-    }
+    // size(), width(), height(), size_content(), fill_width(), fill_height(), fill()
+    // are inherited from ObjectMixin<Grid>.
 };
 
 // ==================== Grid Cell Placement ====================

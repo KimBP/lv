@@ -131,19 +131,7 @@ public:
         return *this;
     }
 
-    // ==================== Size ====================
-
-    /// Set width
-    Slider& width(int32_t w) noexcept {
-        lv_obj_set_width(m_obj, w);
-        return *this;
-    }
-
-    /// Fill parent width
-    Slider& fill_width() noexcept {
-        lv_obj_set_width(m_obj, LV_PCT(100));
-        return *this;
-    }
+    // width(), fill_width() are inherited from ObjectMixin<Slider>.
 
     // ==================== Style Shortcuts ====================
 

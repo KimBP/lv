@@ -182,31 +182,7 @@ public:
         return *this;
     }
 
-    // ==================== Size ====================
-
-    /// Set width
-    Textarea& width(int32_t w) noexcept {
-        lv_obj_set_width(m_obj, w);
-        return *this;
-    }
-
-    /// Set height
-    Textarea& height(int32_t h) noexcept {
-        lv_obj_set_height(m_obj, h);
-        return *this;
-    }
-
-    /// Set size
-    Textarea& size(int32_t w, int32_t h) noexcept {
-        lv_obj_set_size(m_obj, w, h);
-        return *this;
-    }
-
-    /// Fill parent width
-    Textarea& fill_width() noexcept {
-        lv_obj_set_width(m_obj, LV_PCT(100));
-        return *this;
-    }
+    // size(), width(), height(), fill_width() are inherited from ObjectMixin<Textarea>.
 
     // ==================== Style Shortcuts ====================
 
