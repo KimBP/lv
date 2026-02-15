@@ -646,8 +646,15 @@ This approach:
 ### Component Root user_data
 
 Since components no longer occupy `user_data`, the root's `user_data` is freely
-available for application use. Use `lv_obj_set_user_data(root.get(), ptr)` to set it
-and `root().user_data_as<T>()` to retrieve it — no special payload API is needed.
+available for application use.
+
+| Context | Set | Get | Typed get |
+|---------|-----|-----|-----------|
+| Widget (Button, Grid, etc.) | `.user_data(ptr)` | `.user_data()` | `.user_data_as<T>()` |
+| Raw `ObjectView` / `root()` | `lv_obj_set_user_data(obj.get(), ptr)` | `.get_user_data()` | `.get_user_data<T>()` |
+
+Widgets inherit both setter and getter from `ObjectMixin`. Raw `ObjectView` (e.g. from
+`Component::root()`) provides `get_user_data()` / `get_user_data<T>()` directly.
 
 ---
 

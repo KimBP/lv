@@ -109,25 +109,16 @@ public:
         return m_obj == other.m_obj;
     }
 
-    // ==================== Common Object Operations ====================
-
-    /// Set user data pointer
-    /// @deprecated Use ObjectMixin::user_data(void*) on widget types for fluent API,
-    ///             or lv_obj_set_user_data(obj.get(), ptr) for raw ObjectView.
-    [[deprecated("Use the widget's fluent .user_data(ptr) or lv_obj_set_user_data() directly")]]
-    ObjectView& user_data(void* data) noexcept {
-        lv_obj_set_user_data(m_obj, data);
-        return *this;
-    }
+    // ==================== User Data ====================
 
     /// Get user data pointer
-    [[nodiscard]] void* user_data() const noexcept {
+    [[nodiscard]] void* get_user_data() const noexcept {
         return lv_obj_get_user_data(m_obj);
     }
 
     /// Get user data as typed pointer
     template<typename T>
-    [[nodiscard]] T* user_data_as() const noexcept {
+    [[nodiscard]] T* get_user_data() const noexcept {
         return static_cast<T*>(lv_obj_get_user_data(m_obj));
     }
 
@@ -459,6 +450,17 @@ public:
     Derived& user_data(void* data) noexcept {
         lv_obj_set_user_data(obj(), data);
         return *static_cast<Derived*>(this);
+    }
+
+    /// Get user data pointer
+    [[nodiscard]] void* user_data() const noexcept {
+        return lv_obj_get_user_data(obj());
+    }
+
+    /// Get user data as typed pointer
+    template<typename T>
+    [[nodiscard]] T* user_data_as() const noexcept {
+        return static_cast<T*>(lv_obj_get_user_data(obj()));
     }
 
     // ==================== Scrolling ====================
