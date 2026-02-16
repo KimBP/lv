@@ -93,7 +93,7 @@ static void create_gradient_boxes(lv::ObjectView parent) {
     // Linear gradient at an angle (diagonal)
     static auto linear_grad = lv::GradDsc()
         .colors(lv::rgb(0xFFE66D), lv::rgb(0xFF6B6B))
-        .linear(lv_pct(0), lv_pct(0), lv_pct(100), lv_pct(100));
+        .linear(lv::pct(0), lv::pct(0), lv::pct(100), lv::pct(100));
 
     auto box4 = lv::Box::create(row2)
         .size(100, 80)
@@ -109,7 +109,7 @@ static void create_gradient_boxes(lv::ObjectView parent) {
     // Radial gradient
     static auto radial_grad = lv::GradDsc()
         .colors(lv::rgb(0xFFFFFF), lv::rgb(0x2C3E50))
-        .radial(lv_pct(30), lv_pct(30), lv_pct(100), lv_pct(100));
+        .radial(lv::pct(30), lv::pct(30), lv::pct(100), lv::pct(100));
 
     auto box5 = lv::Box::create(row2)
         .size(100, 80)
@@ -128,7 +128,7 @@ static void create_gradient_boxes(lv::ObjectView parent) {
         .stop(lv::rgb(0xF39C12), 85)     // Orange
         .stop(lv::rgb(0x2ECC71), 170)    // Green
         .stop(lv::rgb(0xE74C3C), 255)    // Back to red
-        .conical(lv_pct(50), lv_pct(50), 0, 360);
+        .conical(lv::pct(50), lv::pct(50), 0, 360);
 
     auto box6 = lv::Box::create(row2)
         .size(100, 80)
@@ -153,7 +153,7 @@ static void create_gradient_boxes(lv::ObjectView parent) {
         .stop(lv::rgb(0x00FF00), 128)   // Green
         .stop(lv::rgb(0x0000FF), 192)   // Blue
         .stop(lv::rgb(0xFF00FF), 255)   // Magenta
-        .linear(lv_pct(0), lv_pct(50), lv_pct(100), lv_pct(50));  // Horizontal
+        .linear(lv::pct(0), lv::pct(50), lv::pct(100), lv::pct(50));  // Horizontal
 
     auto box7 = lv::Box::create(row3)
         .size(150, 80)
@@ -169,7 +169,7 @@ static void create_gradient_boxes(lv::ObjectView parent) {
     // Reflected linear gradient (striped effect)
     static auto reflect_grad = lv::GradDsc()
         .colors(lv::rgb(0x26a0da), lv::rgb(0x314755))
-        .linear(lv_pct(0), lv_pct(0), lv_pct(30), lv_pct(100), LV_GRAD_EXTEND_REFLECT);
+        .linear(lv::pct(0), lv::pct(0), lv::pct(30), lv::pct(100), LV_GRAD_EXTEND_REFLECT);
 
     auto box8 = lv::Box::create(row3)
         .size(100, 80)

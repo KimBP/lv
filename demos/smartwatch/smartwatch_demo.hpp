@@ -109,7 +109,7 @@ inline void SmartwatchDemo::create() {
     }
 
     m_theme_original = display.get_theme();
-    lv_theme_t* theme = lv_theme_default_init(display.get(),
+    lv_theme_t* theme = lv::theme_default_init(display.get(),
         lv_palette_main(LV_PALETTE_BLUE), lv_palette_main(LV_PALETTE_RED),
         true, LV_FONT_DEFAULT);
     display.set_theme(theme);
@@ -122,7 +122,7 @@ inline void SmartwatchDemo::create() {
         m_inited = true;
     }
 
-    auto screen = lv::Box(lv::wrap, lv_screen_active());
+    auto screen = lv::Box(lv::wrap, lv::screen_active().get());
     screen.remove_flag(lv::kFlag::scrollable)
         .bg_color(lv::rgb(0x000000));
 
@@ -282,12 +282,12 @@ inline void SmartwatchDemo::create() {
 }
 
 inline void SmartwatchDemo::generate_mask(lv_draw_buf_t* mask, int32_t w, int32_t h, const char* txt) {
-    auto canvas = lv::Box(lv::wrap, lv_canvas_create(lv_screen_active()));
-    lv_canvas_set_draw_buf(canvas.get(), mask);
-    lv_canvas_fill_bg(canvas.get(), lv::colors::black(), lv::opa::transp);
+    auto canvas = lv::Canvas::create(lv::screen_active());
+    canvas.draw_buf(mask);
+    canvas.fill_bg(lv::colors::black(), lv::opa::transp);
 
     lv_layer_t layer;
-    lv_canvas_init_layer(canvas.get(), &layer);
+    canvas.init_layer(&layer);
 
     lv_draw_label_dsc_t label_dsc;
     lv_draw_label_dsc_init(&label_dsc);
@@ -299,12 +299,12 @@ inline void SmartwatchDemo::generate_mask(lv_draw_buf_t* mask, int32_t w, int32_
     lv_area_t a = {0, 0, w - 1, h - 1};
     lv_draw_label(&layer, &label_dsc, &a);
 
-    lv_canvas_finish_layer(canvas.get(), &layer);
+    canvas.finish_layer(&layer);
     canvas.del();
 }
 
 inline void SmartwatchDemo::on_home_gesture(lv::Event /*e*/) {
-    lv_dir_t dir = lv_indev_get_gesture_dir(lv_indev_active());
+    lv_dir_t dir = lv::Indev(lv::indev_active()).gesture_dir();
     if (dir == lv::kDir::bottom) {
         animate_y(m_controller.control_screen().get(), 0, 800, 200);
         animate_arc(m_controller.arc_cont(), ArcAnimation::SHRINK_DOWN, 1000, 0);

@@ -347,8 +347,8 @@ private:
 
         // Update date label (MM/DD format)
         std::array<char, 16> date_buf{};
-        lv_snprintf(date_buf.data(), date_buf.size(), "%02d/%02d",
-                    local->tm_mon + 1, local->tm_mday);
+        lv::snprintf(date_buf.data(), date_buf.size(), "%02d/%02d",
+                     local->tm_mon + 1, local->tm_mday);
         m_date_label.text(date_buf.data());
 
         // Update weekday label

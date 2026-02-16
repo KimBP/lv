@@ -67,11 +67,11 @@ static void create_decoder_demo(lv::ObjectView parent) {
 
     static char info_text[128];
     if (res == LV_RESULT_OK) {
-        lv_snprintf(info_text, sizeof(info_text),
+        lv::snprintf(info_text, sizeof(info_text),
             "Image: %dx%d\nFormat: %d\nResult: OK",
             header.w, header.h, header.cf);
     } else {
-        lv_snprintf(info_text, sizeof(info_text), "Failed to get image info");
+        lv::snprintf(info_text, sizeof(info_text), "Failed to get image info");
     }
 
     lv::Label::create(info_box)
@@ -95,7 +95,7 @@ static void create_decoder_demo(lv::ObjectView parent) {
     static char decode_text[256];
 
     if (dsc.open(&img_red_square)) {
-        lv_snprintf(decode_text, sizeof(decode_text),
+        lv::snprintf(decode_text, sizeof(decode_text),
             "Decoded: %dx%d\n"
             "Format: %d\n"
             "Buffer: %s\n"
@@ -104,7 +104,7 @@ static void create_decoder_demo(lv::ObjectView parent) {
             dsc.color_format(),
             dsc.decoded() ? "valid" : "null");
     } else {
-        lv_snprintf(decode_text, sizeof(decode_text),
+        lv::snprintf(decode_text, sizeof(decode_text),
             "Decode failed: %s",
             dsc.error_msg() ? dsc.error_msg() : "unknown error");
     }

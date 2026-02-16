@@ -131,7 +131,7 @@ private:
             .selected(s_mode->get())
             .on_value_changed([](lv::Event e) {
                 lv_obj_t* btnm_obj = e.target();
-                s_mode->set(lv_buttonmatrix_get_selected_button(btnm_obj));
+                s_mode->set(lv::ButtonMatrix(lv::wrap, btnm_obj).selected());
             });
     }
 

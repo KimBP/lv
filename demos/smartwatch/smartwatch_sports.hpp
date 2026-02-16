@@ -51,7 +51,7 @@ inline void SportsScreen::create(DemoController& controller) {
         m_inited = true;
     }
 
-    auto screen = lv::Box::create(lv_screen_active());
+    auto screen = lv::Box::create(lv::screen_active());
     screen.remove_all_styles()
         .add_style(m_main_style.get())
         .fill()

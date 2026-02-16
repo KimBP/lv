@@ -17,7 +17,7 @@ namespace smartwatch {
 // ControlScreen::on_gesture
 inline void ControlScreen::on_gesture(lv::Event e) {
     (void)e;
-    lv_dir_t dir = lv_indev_get_gesture_dir(lv_indev_active());
+    lv_dir_t dir = lv::Indev(lv::indev_active()).gesture_dir();
 
     if (dir == lv::kDir::left) {
         animate_y(m_screen, -SCREEN_SIZE, 1000, 0);
@@ -36,7 +36,7 @@ inline void ControlScreen::on_long_press(lv::Event e) {
 // WeatherScreen::on_gesture
 inline void WeatherScreen::on_gesture(lv::Event e) {
     (void)e;
-    lv_dir_t dir = lv_indev_get_gesture_dir(lv_indev_active());
+    lv_dir_t dir = lv::Indev(lv::indev_active()).gesture_dir();
 
     if (dir == lv::kDir::right) {
         animate_x(m_screen, SCREEN_SIZE, 1000, 0);
@@ -54,7 +54,7 @@ inline void WeatherScreen::on_gesture(lv::Event e) {
 // HealthScreen::on_gesture
 inline void HealthScreen::on_gesture(lv::Event e) {
     (void)e;
-    lv_dir_t dir = lv_indev_get_gesture_dir(lv_indev_active());
+    lv_dir_t dir = lv::Indev(lv::indev_active()).gesture_dir();
 
     if (dir == lv::kDir::left) {
         animate_x(m_screen, -SCREEN_SIZE - TRANSITION_GAP, 1000, 0);
@@ -69,7 +69,7 @@ inline void HealthScreen::on_gesture(lv::Event e) {
 // SportsScreen::on_gesture
 inline void SportsScreen::on_gesture(lv::Event e) {
     (void)e;
-    lv_dir_t dir = lv_indev_get_gesture_dir(lv_indev_active());
+    lv_dir_t dir = lv::Indev(lv::indev_active()).gesture_dir();
 
     if (dir == lv::kDir::left) {
         animate_x(m_screen, -SCREEN_SIZE - TRANSITION_GAP, 1000, 0);
@@ -84,7 +84,7 @@ inline void SportsScreen::on_gesture(lv::Event e) {
 // MusicScreen::on_gesture
 inline void MusicScreen::on_gesture(lv::Event e) {
     (void)e;
-    lv_dir_t dir = lv_indev_get_gesture_dir(lv_indev_active());
+    lv_dir_t dir = lv::Indev(lv::indev_active()).gesture_dir();
 
     if (dir == lv::kDir::left) {
         animate_x(m_screen, -SCREEN_SIZE, 1000, 0);

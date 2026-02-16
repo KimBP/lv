@@ -33,7 +33,7 @@ public:
 private:
     void on_gesture(lv::Event e);
     void on_long_press(lv::Event e);
-    static void on_scroll(lv_event_t* e);  // Stateless, no user_data needed
+    static void on_scroll(lv::Event e);  // Stateless, no user_data needed
 
     lv_obj_t* m_screen = nullptr;
     DemoController* m_controller = nullptr;
@@ -80,7 +80,7 @@ inline void ControlScreen::create(DemoController& controller) {
         m_inited = true;
     }
 
-    auto screen = lv::Box::create(lv_screen_active());
+    auto screen = lv::Box::create(lv::screen_active());
     screen.remove_all_styles()
         .add_style(m_main_style.get())
         .fill()
@@ -90,7 +90,7 @@ inline void ControlScreen::create(DemoController& controller) {
         .remove_flag(lv::kFlag::event_bubble);
     screen.on<&ControlScreen::on_gesture>(lv::kEvent::gesture, this)
           .on<&ControlScreen::on_long_press>(lv::kEvent::long_pressed, this)
-          .on(lv::kEvent::scroll, [](lv_event_t* e) { on_scroll(e); });
+          .on(lv::kEvent::scroll, [](lv::Event e) { on_scroll(e); });
     m_screen = screen.get();
 
     // Create 5 row containers
@@ -127,8 +127,8 @@ inline void ControlScreen::create(DemoController& controller) {
 // on_gesture and on_long_press implementations deferred to smartwatch_gestures.hpp
 // to avoid incomplete type issues with DemoController
 
-inline void ControlScreen::on_scroll(lv_event_t* e) {
-    auto cont = lv::Box(lv::wrap, static_cast<lv_obj_t*>(lv_event_get_target(e)));
+inline void ControlScreen::on_scroll(lv::Event e) {
+    auto cont = lv::Box(lv::wrap, e.target().get());
 
     lv_area_t cont_a;
     cont.get_coords(&cont_a);

@@ -152,7 +152,7 @@ inline void WeatherScreen::create(DemoController& controller) {
         m_inited = true;
     }
 
-    auto screen = lv::Box::create(lv_screen_active());
+    auto screen = lv::Box::create(lv::screen_active());
     screen.remove_all_styles()
         .add_style(m_main_style.get())
         .fill()
@@ -203,19 +203,18 @@ inline void WeatherScreen::create(DemoController& controller) {
         .center_content();
 
 #if LV_USE_LOTTIE == 1
-    // Lottie widget - wrap with Box to get fluent API
-    auto sun_icon = lv::Box(lv::wrap, lv_lottie_create(temp_cont));
-    lv_lottie_set_src_data(sun_icon.get(), lottie_sun_cloud, lottie_sun_cloud_size);
+    auto sun_icon = lv::Lottie::create(temp_cont)
+        .src_data(lottie_sun_cloud, lottie_sun_cloud_size);
     sun_icon.size(lv::kSize::content, lv::kSize::content)
         .align(lv::kAlign::center)
         .add_flag(lv::kFlag::clickable)
         .remove_flag(lv::kFlag::scrollable);
 #if LV_DRAW_BUF_ALIGN == 4 && LV_DRAW_BUF_STRIDE_ALIGN == 1
     static uint8_t sun_buf[100 * 89 * 4];
-    lv_lottie_set_buffer(sun_icon.get(), 100, 89, sun_buf);
+    sun_icon.buffer(100, 89, sun_buf);
 #else
     LV_DRAW_BUF_DEFINE(sun_buf, 64, 64, LV_COLOR_FORMAT_ARGB8888);
-    lv_lottie_set_draw_buf(sun_icon.get(), &sun_buf);
+    sun_icon.draw_buf(&sun_buf);
 #endif
 #endif
 

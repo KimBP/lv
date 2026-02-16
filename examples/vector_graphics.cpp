@@ -97,10 +97,10 @@ static void draw_vector_shapes(lv::Canvas& canvas) {
     // Set up linear gradient
     lv_grad_stop_t stops[2];
     stops[0].frac = 0;
-    stops[0].color = lv_color_hex(0x4FC3F7);  // Light blue
+    stops[0].color = lv::rgb(0x4FC3F7);  // Light blue
     stops[0].opa = LV_OPA_COVER;
     stops[1].frac = 255;
-    stops[1].color = lv_color_hex(0x0D47A1);  // Dark blue
+    stops[1].color = lv::rgb(0x0D47A1);  // Dark blue
     stops[1].opa = LV_OPA_COVER;
 
     dsc.fill_linear_gradient(10, 270, 10, 350)

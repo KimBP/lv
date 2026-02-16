@@ -57,7 +57,7 @@ inline void HealthScreen::create(DemoController& controller) {
         m_inited = true;
     }
 
-    auto screen = lv::Box::create(lv_screen_active());
+    auto screen = lv::Box::create(lv::screen_active());
     screen.remove_all_styles()
         .add_style(m_main_style.get())
         .fill()
@@ -86,8 +86,8 @@ inline void HealthScreen::create(DemoController& controller) {
         .get();
 
 #if LV_USE_LOTTIE == 1
-    auto lottie_ecg = lv::Box(lv::wrap, lv_lottie_create(m_screen));
-    lv_lottie_set_src_data(lottie_ecg.get(), lottie_ecg_wave, lottie_ecg_wave_size);
+    auto lottie_ecg = lv::Lottie::create(m_screen)
+        .src_data(lottie_ecg_wave, lottie_ecg_wave_size);
     lottie_ecg.remove_all_styles()
         .size(lv::kSize::content, lv::kSize::content)
         .pos(0, -60)
@@ -98,10 +98,10 @@ inline void HealthScreen::create(DemoController& controller) {
     m_lottie_ecg = lottie_ecg.get();
 #if LV_DRAW_BUF_ALIGN == 4 && LV_DRAW_BUF_STRIDE_ALIGN == 1
     static uint8_t ecg_buf[410 * 176 * 4];
-    lv_lottie_set_buffer(m_lottie_ecg, 410, 176, ecg_buf);
+    lottie_ecg.buffer(410, 176, ecg_buf);
 #else
     LV_DRAW_BUF_DEFINE(ecg_buf, 64, 64, LV_COLOR_FORMAT_ARGB8888);
-    lv_lottie_set_draw_buf(m_lottie_ecg, &ecg_buf);
+    lottie_ecg.draw_buf(&ecg_buf);
 #endif
 #endif
 
@@ -164,8 +164,8 @@ inline void HealthScreen::create(DemoController& controller) {
         .get();
 
 #if LV_USE_LOTTIE == 1
-    auto heart_icon = lv::Box(lv::wrap, lv_lottie_create(m_screen));
-    lv_lottie_set_src_data(heart_icon.get(), lottie_heart_small, lottie_heart_small_size);
+    auto heart_icon = lv::Lottie::create(m_screen)
+        .src_data(lottie_heart_small, lottie_heart_small_size);
     heart_icon.size(lv::kSize::content, lv::kSize::content)
         .pos(0, -30)
         .align(lv::kAlign::center)
@@ -174,10 +174,10 @@ inline void HealthScreen::create(DemoController& controller) {
     m_heart_icon = heart_icon.get();
 #if LV_DRAW_BUF_ALIGN == 4 && LV_DRAW_BUF_STRIDE_ALIGN == 1
     static uint8_t heart_buf[90 * 77 * 4];
-    lv_lottie_set_buffer(m_heart_icon, 90, 77, heart_buf);
+    heart_icon.buffer(90, 77, heart_buf);
 #else
     LV_DRAW_BUF_DEFINE(heart_buf, 64, 64, LV_COLOR_FORMAT_ARGB8888);
-    lv_lottie_set_draw_buf(m_heart_icon, &heart_buf);
+    heart_icon.draw_buf(&heart_buf);
 #endif
 #endif
 

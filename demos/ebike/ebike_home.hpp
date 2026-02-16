@@ -383,8 +383,9 @@ private:
 
         // Add scroll handler using on_scroll_end with user_data
         lv_obj_add_event_cb(parent.get(), [](lv_event_t* e) {
-            lv::Box main_cont(lv::wrap, lv_event_get_target_obj(e));
-            lv::Box bullet_cont(lv::wrap, static_cast<lv_obj_t*>(lv_event_get_user_data(e)));
+            lv::Event event(e);
+            lv::Box main_cont(lv::wrap, event.target().get());
+            lv::Box bullet_cont(lv::wrap, static_cast<lv_obj_t*>(event.user_data()));
 
             int32_t idx = main_cont.scroll_x() / main_cont.content_width();
 
