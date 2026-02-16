@@ -22,7 +22,7 @@ public:
             .fill_width()
             .padding_hor(5)
             .padding_ver(8)
-            .align_items(lv::align::center);
+            .align_items(lv::kFlexAlign::center);
 
         lv::Label::create(row)
             .text(label_text)
@@ -112,7 +112,7 @@ public:
         auto buttons = lv::hbox(root)
             .fill_width()
             .gap(20)
-            .justify(lv::align::center);
+            .justify(lv::kFlexAlign::center);
 
         lv::Button::create(buttons)
             .text("Reset")

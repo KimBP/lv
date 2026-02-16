@@ -78,7 +78,7 @@ public:
         auto controls = lv::hbox(root)
             .fill_width()
             .gap(10)
-            .align_items(lv::align::center);
+            .align_items(lv::kFlexAlign::center);
 
         lv::Button::create(controls)
             .text("Start")
@@ -96,7 +96,7 @@ public:
         auto type_row = lv::hbox(root)
             .fill_width()
             .gap(10)
-            .align_items(lv::align::center);
+            .align_items(lv::kFlexAlign::center);
 
         lv::Label::create(type_row).text("Type:");
 

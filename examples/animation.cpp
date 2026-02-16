@@ -104,7 +104,7 @@ private:
             .gap(10)
             .height(60)
             .padding(8)
-            .align_items(lv::align::center);
+            .align_items(lv::kFlexAlign::center);
 
         // Label for the easing name
         lv::Label::create(row)

@@ -47,7 +47,7 @@ private:
             .gap(10)
             .bg_color(lv::rgb(0xf5f5f5))
             .radius(8)
-            .align_items(lv::align::center);
+            .align_items(lv::kFlexAlign::center);
         btn.clickable(true);
         btn.on_click<DestMethod>(this);
 
@@ -148,14 +148,14 @@ private:
             .gap(10)
             .bg_color(lv::colors::white())  // white() exists in C API
             .radius(12)
-            .align_items(lv::align::center);
+            .align_items(lv::kFlexAlign::center);
 
         // Avatar placeholder
         auto avatar = lv::vbox(card)
             .size(80, 80)
             .bg_color(lv::rgb(0x2196F3))  // blue
             .radius(lv::kRadius::circle)
-            .align_items(lv::align::center);
+            .align_items(lv::kFlexAlign::center);
         lv::Label::create(avatar)
             .text(lv::symbol::home)
             .text_color(lv::colors::white())  // white() exists in C API
@@ -218,7 +218,7 @@ private:
         auto header = lv::hbox(parent)
             .fill_width()
             .gap(10)
-            .align_items(lv::align::center);
+            .align_items(lv::kFlexAlign::center);
 
         // Back button
         lv::Button::create(header)
@@ -237,7 +237,7 @@ private:
             .padding(10)
             .bg_color(lv::colors::white())  // white() exists in C API
             .radius(8)
-            .align_items(lv::align::center);
+            .align_items(lv::kFlexAlign::center);
 
         lv::Label::create(box)
             .text(value)

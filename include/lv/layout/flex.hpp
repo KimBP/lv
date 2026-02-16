@@ -226,16 +226,4 @@ public:
     return Flex(parent, LV_FLEX_FLOW_COLUMN_WRAP);
 }
 
-
-// ==================== Alignment Helpers ====================
-
-namespace align {
-    constexpr auto start = LV_FLEX_ALIGN_START;
-    constexpr auto end = LV_FLEX_ALIGN_END;
-    constexpr auto center = LV_FLEX_ALIGN_CENTER;
-    constexpr auto space_evenly = LV_FLEX_ALIGN_SPACE_EVENLY;
-    constexpr auto space_around = LV_FLEX_ALIGN_SPACE_AROUND;
-    constexpr auto space_between = LV_FLEX_ALIGN_SPACE_BETWEEN;
-} // namespace align
-
 } // namespace lv

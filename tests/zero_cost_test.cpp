@@ -88,7 +88,7 @@ extern "C" lv_obj_t* test_c_flex(lv_obj_t* parent) {
 lv_obj_t* test_cpp_flex(lv_obj_t* parent) {
     auto cont = lv::hbox(lv::ObjectView(parent))
         .gap(10)
-        .align_items(lv::align::center);
+        .align_items(lv::kFlexAlign::center);
     return cont.get();
 }
 

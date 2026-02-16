@@ -129,7 +129,7 @@ public:
         auto lang_row = lv::hbox(content)
             .fill_width()
             .gap(10)
-            .align_items(lv::align::center);
+            .align_items(lv::kFlexAlign::center);
 
         m_language_label = lv::Label::create(lang_row)
             .text(lv::tr("language"));
@@ -156,7 +156,7 @@ public:
             .padding(10)
             .bg_color(lv::rgb(0xf5f5f5))
             .radius(8)
-            .align_items(lv::align::center);
+            .align_items(lv::kFlexAlign::center);
         m_dark_mode_label = lv::Label::create(dark_row)
             .text(lv::tr("dark_mode"))
             .grow(1);
@@ -168,7 +168,7 @@ public:
             .padding(10)
             .bg_color(lv::rgb(0xf5f5f5))
             .radius(8)
-            .align_items(lv::align::center);
+            .align_items(lv::kFlexAlign::center);
         m_notifications_label = lv::Label::create(notif_row)
             .text(lv::tr("notifications"))
             .grow(1);
@@ -181,7 +181,7 @@ public:
             .bg_color(lv::rgb(0xf5f5f5))
             .radius(8)
             .gap(10)
-            .align_items(lv::align::center);
+            .align_items(lv::kFlexAlign::center);
         m_volume_label = lv::Label::create(volume_row)
             .text(lv::tr("volume"));
         lv::Slider::create(volume_row)

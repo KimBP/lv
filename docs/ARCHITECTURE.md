@@ -320,8 +320,8 @@ counter.set(counter.get() + 1);
 auto row = lv::hbox(parent)
     .gap(10)
     .padding(16)
-    .align_items(lv::align::center)
-    .justify_content(lv::align::space_between);
+    .align_items(lv::kFlexAlign::center)
+    .justify_content(lv::kFlexAlign::space_between);
 
 auto col = lv::vbox(parent)
     .gap(8)
@@ -518,7 +518,7 @@ public:
             .fill()
             .padding(20)
             .gap(16)
-            .align_items(lv::align::center);
+            .align_items(lv::kFlexAlign::center);
 
         lv::Label(root)
             .text("Hello, LVGL!")
