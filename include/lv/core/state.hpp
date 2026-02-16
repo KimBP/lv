@@ -39,7 +39,7 @@ private:
     T m_value;
 
     // Type-specific initialization
-    void init_subject() {
+    void init_subject() noexcept {
         if constexpr (std::is_integral_v<T> && sizeof(T) <= sizeof(int32_t)) {
             lv_subject_init_int(&m_subject, static_cast<int32_t>(m_value));
         } else if constexpr (std::is_pointer_v<T>) {
@@ -53,7 +53,7 @@ private:
     }
 
     // Type-specific update
-    void update_subject() {
+    void update_subject() noexcept {
         if constexpr (std::is_integral_v<T> && sizeof(T) <= sizeof(int32_t)) {
             lv_subject_set_int(&m_subject, static_cast<int32_t>(m_value));
         } else if constexpr (std::is_pointer_v<T>) {
@@ -68,12 +68,12 @@ private:
 
 public:
     /// Construct with initial value
-    explicit State(T initial = T{}) : m_value(initial) {
+    explicit State(T initial = T{}) noexcept : m_value(initial) {
         init_subject();
     }
 
     /// Destructor
-    ~State() {
+    ~State() noexcept {
         lv_subject_deinit(&m_subject);
     }
 
@@ -98,7 +98,7 @@ public:
     }
 
     /// Set new value (notifies observers if changed)
-    void set(T new_value) {
+    void set(T new_value) noexcept {
         if constexpr (std::is_integral_v<T> || std::is_pointer_v<T>) {
             if (m_value != new_value) {
                 m_value = new_value;
@@ -117,7 +117,7 @@ public:
     }
 
     /// Force notify all observers (even if value unchanged)
-    void notify() {
+    void notify() noexcept {
         lv_subject_notify(&m_subject);
     }
 
@@ -126,21 +126,21 @@ public:
     /// Increment value (for integral types)
     template<typename U = T>
         requires std::is_integral_v<U>
-    void increment(U delta = 1) {
+    void increment(U delta = 1) noexcept {
         set(m_value + delta);
     }
 
     /// Decrement value (for integral types)
     template<typename U = T>
         requires std::is_integral_v<U>
-    void decrement(U delta = 1) {
+    void decrement(U delta = 1) noexcept {
         set(m_value - delta);
     }
 
     /// Prefix increment
     template<typename U = T>
         requires std::is_integral_v<U>
-    State& operator++() {
+    State& operator++() noexcept {
         increment();
         return *this;
     }
@@ -148,7 +148,7 @@ public:
     /// Prefix decrement
     template<typename U = T>
         requires std::is_integral_v<U>
-    State& operator--() {
+    State& operator--() noexcept {
         decrement();
         return *this;
     }
@@ -156,7 +156,7 @@ public:
     /// Add and assign
     template<typename U = T>
         requires std::is_integral_v<U>
-    State& operator+=(U delta) {
+    State& operator+=(U delta) noexcept {
         increment(delta);
         return *this;
     }
@@ -164,7 +164,7 @@ public:
     /// Subtract and assign
     template<typename U = T>
         requires std::is_integral_v<U>
-    State& operator-=(U delta) {
+    State& operator-=(U delta) noexcept {
         decrement(delta);
         return *this;
     }
