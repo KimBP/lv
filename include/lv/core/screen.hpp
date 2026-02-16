@@ -67,7 +67,7 @@ namespace screen_anim {
  *
  * Usage:
  *   lv::Screen home;
- *   lv::Label(home).text("Home");
+ *   lv::Label::create(home).text("Home");
  *   home.load();  // Make active
  */
 class Screen : public ObjectView,
@@ -79,10 +79,7 @@ public:
     Screen() noexcept : ObjectView(lv_obj_create(nullptr)) {}
 
     /// Wrap existing screen object
-    struct wrap_t {};
-    static constexpr wrap_t wrap{};
-
-    Screen(wrap_t, lv_obj_t* obj) noexcept : ObjectView(obj) {}
+    Screen(lv::wrap_t, lv_obj_t* obj) noexcept : ObjectView(obj) {}
 
     // ==================== Loading ====================
 
@@ -140,7 +137,7 @@ public:
 
 /// Get the active screen (implementation after Screen class)
 inline Screen screen_active() noexcept {
-    return Screen(Screen::wrap, lv_screen_active());
+    return Screen(lv::wrap, lv_screen_active());
 }
 
 /**

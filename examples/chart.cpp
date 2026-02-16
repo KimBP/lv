@@ -33,7 +33,7 @@ static void generate_random_data(lv_chart_series_t* ser, lv::Chart& chart) {
 #if LV_USE_OBSERVER
 
 class ChartDemo : public lv::Component<ChartDemo> {
-    lv::Chart* m_chart = nullptr;
+    lv::Chart m_chart;
     lv_chart_series_t* m_ser1 = nullptr;
     lv_chart_series_t* m_ser2 = nullptr;
     std::unique_ptr<lv::Timer> m_timer;
@@ -60,15 +60,15 @@ public:
             .div_lines(5, 4)
             .update_mode(lv::Chart::UpdateMode::shift);
 
-        m_chart = new lv::Chart(lv::wrap, chart.get());
+        m_chart = lv::Chart(lv::wrap, chart.get());
 
         // Add series
-        m_ser1 = m_chart->add_series(lv::rgb(0x2196F3), lv::Chart::Axis::primary_y);  // blue
-        m_ser2 = m_chart->add_series(lv::rgb(0xF44336), lv::Chart::Axis::primary_y);  // red
+        m_ser1 = m_chart.add_series(lv::rgb(0x2196F3), lv::Chart::Axis::primary_y);  // blue
+        m_ser2 = m_chart.add_series(lv::rgb(0xF44336), lv::Chart::Axis::primary_y);  // red
 
         // Initial data
-        generate_sine_data(m_ser1, *m_chart, 0);
-        generate_random_data(m_ser2, *m_chart);
+        generate_sine_data(m_ser1, m_chart, 0);
+        generate_random_data(m_ser2, m_chart);
 
         // Axis labels
         lv::Label::create(root)
@@ -108,10 +108,6 @@ public:
         return root;
     }
 
-    ~ChartDemo() {
-        delete m_chart;
-    }
-
 private:
     void on_start(lv::Event) {
         if (!m_timer) {
@@ -125,9 +121,9 @@ private:
 
     void on_reset(lv::Event) {
         m_tick = 0;
-        generate_sine_data(m_ser1, *m_chart, 0);
-        generate_random_data(m_ser2, *m_chart);
-        m_chart->refresh();
+        generate_sine_data(m_ser1, m_chart, 0);
+        generate_random_data(m_ser2, m_chart);
+        m_chart.refresh();
     }
 
     void on_type_changed(lv::Event e) {
@@ -141,7 +137,7 @@ private:
         };
 
         if (sel < 3) {
-            m_chart->type(types[sel]);
+            m_chart.type(types[sel]);
         }
     }
 
@@ -151,13 +147,13 @@ private:
 
         // Add new sine point
         int32_t sine_val = static_cast<int32_t>(50 + 40 * std::sin(self->m_tick * 0.3));
-        self->m_chart->set_next_value(self->m_ser1, sine_val);
+        self->m_chart.set_next_value(self->m_ser1, sine_val);
 
         // Add new random point
         int32_t rand_val = 20 + (std::rand() % 60);
-        self->m_chart->set_next_value(self->m_ser2, rand_val);
+        self->m_chart.set_next_value(self->m_ser2, rand_val);
 
-        self->m_chart->refresh();
+        self->m_chart.refresh();
     }
 };
 

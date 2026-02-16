@@ -47,10 +47,7 @@ public:
         : ObjectView(lv_qrcode_create(parent)) {}
 
     /// Wrap existing QR code object
-    struct wrap_t {};
-    static constexpr wrap_t wrap{};
-
-    QRCode(wrap_t, lv_obj_t* obj) noexcept
+    QRCode(lv::wrap_t, lv_obj_t* obj) noexcept
         : ObjectView(obj) {}
 
     // ==================== Configuration ====================

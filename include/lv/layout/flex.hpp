@@ -188,8 +188,8 @@ public:
  *     .gap(10)
  *     .padding(8);
  *
- * lv::Button(row).text("A");
- * lv::Button(row).text("B");
+ * lv::Button::create(row).text("A");
+ * lv::Button::create(row).text("B");
  * @endcode
  */
 [[nodiscard]] inline Flex hbox(ObjectView parent) {
@@ -204,8 +204,8 @@ public:
  *     .gap(10)
  *     .padding(8);
  *
- * lv::Label(col).text("Title");
- * lv::Button(col).text("Click");
+ * lv::Label::create(col).text("Title");
+ * lv::Button::create(col).text("Click");
  * @endcode
  */
 [[nodiscard]] inline Flex vbox(ObjectView parent) {

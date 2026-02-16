@@ -51,10 +51,7 @@ public:
         : ObjectView(lv_gif_create(parent)) {}
 
     /// Wrap existing GIF object
-    struct wrap_t {};
-    static constexpr wrap_t wrap{};
-
-    GIF(wrap_t, lv_obj_t* obj) noexcept
+    GIF(lv::wrap_t, lv_obj_t* obj) noexcept
         : ObjectView(obj) {}
 
     // ==================== Source ====================

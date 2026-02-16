@@ -19,21 +19,21 @@
  *     lv::State<int> counter{0};
  *
  * public:
- *     lv_obj_t* build(lv_obj_t* parent) {
+ *     lv::ObjectView build(lv::ObjectView parent) {
  *         auto root = lv::vbox(parent).padding(16).gap(8);
  *
- *         lv::Label(root.get())
+ *         lv::Label::create(root)
  *             .bind_text(counter, "Count: %d");
  *
- *         lv::Button(root.get())
- *             .label("Click me")
+ *         lv::Button::create(root)
+ *             .text("Click me")
  *             .on_click<&MyApp::on_click>(this);
  *
- *         return root.get();
+ *         return root;
  *     }
  *
  * private:
- *     void on_click(lv_event_t*) {
+ *     void on_click(lv::Event) {
  *         ++counter;
  *     }
  * };

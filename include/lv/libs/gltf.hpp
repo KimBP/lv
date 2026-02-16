@@ -78,10 +78,7 @@ public:
         : ObjectView(lv_gltf_create(parent)) {}
 
     /// Wrap existing glTF object
-    struct wrap_t {};
-    static constexpr wrap_t wrap{};
-
-    GLTF(wrap_t, lv_obj_t* obj) noexcept
+    GLTF(lv::wrap_t, lv_obj_t* obj) noexcept
         : ObjectView(obj) {}
 
     // ==================== Model Loading ====================

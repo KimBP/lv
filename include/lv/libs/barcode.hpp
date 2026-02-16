@@ -54,10 +54,7 @@ public:
         : ObjectView(lv_barcode_create(parent)) {}
 
     /// Wrap existing barcode object
-    struct wrap_t {};
-    static constexpr wrap_t wrap{};
-
-    Barcode(wrap_t, lv_obj_t* obj) noexcept
+    Barcode(lv::wrap_t, lv_obj_t* obj) noexcept
         : ObjectView(obj) {}
 
     // ==================== Configuration ====================

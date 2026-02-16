@@ -38,7 +38,7 @@ public:
  *
  * Usage:
  * @code
- * lv::Label(parent)
+ * lv::Label::create(parent)
  *     .text("Hello")
  *     .font(lv::fonts::montserrat_20);
  * @endcode

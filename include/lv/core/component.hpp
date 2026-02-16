@@ -42,10 +42,10 @@ namespace lv {
  *     lv::ObjectView build(lv::ObjectView parent) {
  *         auto root = lv::vbox(parent).padding(10).gap(5);
  *
- *         lv::Label(root)
+ *         lv::Label::create(root)
  *             .bind_text(counter, "Count: %d");
  *
- *         lv::Button(root)
+ *         lv::Button::create(root)
  *             .text("Increment")
  *             .on_click<&MyComponent::on_increment>(this);
  *

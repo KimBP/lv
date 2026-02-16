@@ -12,17 +12,9 @@
 #include <lvgl.h>
 #include <utility>
 #include <cstdint>
+#include "wrap.hpp"
 
 namespace lv {
-
-// ==================== Wrap Tag ====================
-
-/// Tag type for wrapping existing lv_obj_t* without creating new object
-struct wrap_t {};
-
-/// Tag instance for wrapping existing lv_obj_t*
-/// Usage: auto box = lv::Box(lv::wrap, existing_ptr);
-inline constexpr wrap_t wrap{};
 
 // ==================== Feature Detection ====================
 

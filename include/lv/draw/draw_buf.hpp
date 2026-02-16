@@ -7,6 +7,7 @@
 
 #include <lvgl.h>
 #include <utility>
+#include "../core/wrap.hpp"
 
 namespace lv {
 
@@ -32,10 +33,7 @@ public:
         : m_buf(lv_draw_buf_create(w, h, cf, stride)) {}
 
     /// Wrap an existing draw buffer (non-owning)
-    struct wrap_t {};
-    static constexpr wrap_t wrap{};
-
-    DrawBuf(wrap_t, lv_draw_buf_t* buf) noexcept : m_buf(buf) {}
+    DrawBuf(lv::wrap_t, lv_draw_buf_t* buf) noexcept : m_buf(buf) {}
 
     /// Default constructor (null buffer)
     DrawBuf() noexcept : m_buf(nullptr) {}

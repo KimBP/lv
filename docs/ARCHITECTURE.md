@@ -26,7 +26,7 @@ The compiler inlines all wrapper methods, producing identical assembly to hand-w
 All widget configuration uses method chaining for readable, declarative UI code:
 
 ```cpp
-lv::Button(parent)
+lv::Button::create(parent)
     .text("Click me")
     .size(120, 40)
     .bg_color(lv::rgb(0x2196F3))  // blue
@@ -94,7 +94,7 @@ The library avoids heap allocations in the wrapper layer. State management (`lv:
 
 | File | Purpose |
 |------|---------|
-| `object.hpp` | Base `ObjectView`/`Object` classes + global constants (State, Part, Flag, Direction, Align, etc.) |
+| `object.hpp` | Base `ObjectView`/`Object` classes + global constants (`kState`, `kPart`, `kFlag`, `kDirection`, `kAlign`, etc.) |
 | `event.hpp` | Type-safe event handling with `EventMixin<Derived>` CRTP |
 | `style.hpp` | Style management with `StyleMixin<Derived>` CRTP |
 | `color.hpp` | Color utilities (`hex()`, `rgb()`, `colors::` namespace) |
@@ -296,7 +296,7 @@ A reactive container that triggers UI updates when changed:
 lv::State<int> counter{0};
 
 // In component build()
-lv::Label(parent)
+lv::Label::create(parent)
     .bind_text(counter, "Count: %d");
 
 // Later, UI auto-updates
@@ -321,14 +321,14 @@ auto row = lv::hbox(parent)
     .gap(10)
     .padding(16)
     .align_items(lv::kFlexAlign::center)
-    .justify_content(lv::kFlexAlign::space_between);
+    .justify(lv::kFlexAlign::space_between);
 
 auto col = lv::vbox(parent)
-    .gap(8)
-    .wrap(true);
+    .gap(8);
+    // Use lv::vbox_wrap(parent) for wrapping columns.
 
 // Child flex properties
-child.flex_grow(1);
+child.grow(1);
 ```
 
 ### Grid (`lv::Grid`)
@@ -374,9 +374,9 @@ public:
     lv::ObjectView build(lv::ObjectView parent) {
         auto root = lv::vbox(parent).padding(16).gap(8);
 
-        lv::Label(root).bind_text(count, "Count: %d");
+        lv::Label::create(root).bind_text(count, "Count: %d");
 
-        lv::Button(root)
+        lv::Button::create(root)
             .text("Increment")
             .on_click<&CounterView::on_increment>(this);
 
@@ -445,8 +445,8 @@ button.add_style(&button_style);
 |---------|------------|---------|
 | Classes | PascalCase | `Chart`, `Button`, `Label` |
 | Type aliases | PascalCase | `Color`, `Opacity`, `EventData` |
-| Constant structs | PascalCase | `ObjState`, `Part`, `Flag` |
-| Constant values | snake_case | `ObjState::checked`, `Part::main` |
+| Global constant namespaces | k-prefixed | `kState`, `kPart`, `kFlag` |
+| Constant values | snake_case | `kState::checked`, `kPart::main` |
 | Functions | snake_case | `hex()`, `rgb()`, `snprintf()` |
 | Namespaces | snake_case | `colors`, `symbol`, `fonts` |
 | Member methods | snake_case | `bg_color()`, `fill_width()` |
@@ -454,7 +454,7 @@ button.add_style(&button_style);
 ### Rules
 
 1. **Don't hide pointers** - `lv_chart_series_t*` stays as-is, not aliased
-2. **Full names** - `GradientDirection` not `GradDir`
+2. **k-prefixed global constants** - `kGradientDirection`, `kBlendMode`, etc.
 3. **Trailing underscore for reserved words** - `default_`, `auto_`
 
 ---
@@ -520,20 +520,20 @@ public:
             .gap(16)
             .align_items(lv::kFlexAlign::center);
 
-        lv::Label(root)
+        lv::Label::create(root)
             .text("Hello, LVGL!")
             .text_color(lv::rgb(0x2196F3));  // blue
 
-        lv::Label(root)
+        lv::Label::create(root)
             .bind_text(counter, "Counter: %d");
 
         auto buttons = lv::hbox(root).gap(10);
 
-        lv::Button(buttons)
+        lv::Button::create(buttons)
             .text(LV_SYMBOL_MINUS)
             .on_click<&MyApp::decrement>(this);
 
-        lv::Button(buttons)
+        lv::Button::create(buttons)
             .text(LV_SYMBOL_PLUS)
             .on_click<&MyApp::increment>(this);
 
