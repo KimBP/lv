@@ -21,7 +21,7 @@ extern "C" void test_c_label(lv_obj_t* parent) {
 
 // C++ version - should produce identical assembly
 void test_cpp_label(lv_obj_t* parent) {
-    lv::Label(parent)
+    lv::Label::create(parent)
         .text("Hello")
         .width(100);
 }
@@ -48,7 +48,7 @@ extern "C" void test_c_event(lv_obj_t* parent, Handler* h) {
 
 // C++ version
 void test_cpp_event(lv_obj_t* parent, Handler* h) {
-    lv::Button(parent)
+    lv::Button::create(parent)
         .on_click<&Handler::on_click>(h);
 }
 
@@ -64,8 +64,8 @@ extern "C" void test_c_style(lv_obj_t* obj) {
 }
 
 // C++ version
-void test_cpp_style(lv_obj_t* obj) {
-    lv::ObjectView(obj)
+void test_cpp_style(lv_obj_t* parent) {
+    lv::Box::create(parent)
         .bg_color(lv::rgb(0xFF0000))
         .radius(8)
         .padding(16);
@@ -86,7 +86,7 @@ extern "C" lv_obj_t* test_c_flex(lv_obj_t* parent) {
 
 // C++ version
 lv_obj_t* test_cpp_flex(lv_obj_t* parent) {
-    auto cont = lv::hbox(parent)
+    auto cont = lv::hbox(lv::ObjectView(parent))
         .gap(10)
         .align_items(lv::align::center);
     return cont.get();

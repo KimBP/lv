@@ -109,8 +109,8 @@ static_assert(sizeof(Canvas) == sizeof(void*),
 static_assert(sizeof(AnimImage) == sizeof(void*),
     "AnimImage must be pointer-sized");
 
-static_assert(sizeof(Span) == sizeof(void*),
-    "Span must be pointer-sized");
+static_assert(sizeof(Spangroup) == sizeof(void*),
+    "Spangroup must be pointer-sized");
 
 // ==================== Container Widgets ====================
 
@@ -126,8 +126,8 @@ static_assert(sizeof(Tabview) == sizeof(void*),
 static_assert(sizeof(Tileview) == sizeof(void*),
     "Tileview must be pointer-sized");
 
-static_assert(sizeof(Win) == sizeof(void*),
-    "Win must be pointer-sized");
+static_assert(sizeof(Window) == sizeof(void*),
+    "Window must be pointer-sized");
 
 static_assert(sizeof(Msgbox) == sizeof(void*),
     "Msgbox must be pointer-sized");
@@ -138,7 +138,13 @@ static_assert(sizeof(Calendar) == sizeof(void*),
 static_assert(sizeof(ImageButton) == sizeof(void*),
     "ImageButton must be pointer-sized");
 
-// ==================== Layout Helpers ====================
+// ==================== Layout & Container Helpers ====================
+
+static_assert(sizeof(Box) == sizeof(void*),
+    "Box must be pointer-sized");
+
+static_assert(sizeof(Grid) == sizeof(void*),
+    "Grid must be pointer-sized");
 
 static_assert(sizeof(Flex) == sizeof(void*),
     "Flex must be pointer-sized");

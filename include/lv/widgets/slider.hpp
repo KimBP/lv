@@ -92,7 +92,6 @@ public:
     /// Range mode (two knobs)
     Slider& mode_range() noexcept {
         return mode(LV_SLIDER_MODE_RANGE);
-        return *this;
     }
 
     // ==================== Range Mode ====================

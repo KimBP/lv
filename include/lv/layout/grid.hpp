@@ -61,10 +61,7 @@ public:
         lv_obj_remove_flag(m_obj, LV_OBJ_FLAG_SCROLLABLE);
     }
 
-    struct wrap_t {};
-    static constexpr wrap_t wrap{};
-
-    Grid(wrap_t, lv_obj_t* obj) noexcept
+    Grid(lv::wrap_t, lv_obj_t* obj) noexcept
         : ObjectView(obj) {}
 
     // ==================== Grid Template ====================
