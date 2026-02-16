@@ -262,11 +262,15 @@ template<typename Derived>
 class ObjectMixin {
 private:
     [[nodiscard]] lv_obj_t* obj() noexcept {
-        return static_cast<Derived*>(this)->get();
+        lv_obj_t* p = static_cast<Derived*>(this)->get();
+        LV_ASSERT_NULL(p);
+        return p;
     }
 
     [[nodiscard]] lv_obj_t* obj() const noexcept {
-        return static_cast<const Derived*>(this)->get();
+        lv_obj_t* p = static_cast<const Derived*>(this)->get();
+        LV_ASSERT_NULL(p);
+        return p;
     }
 
 public:

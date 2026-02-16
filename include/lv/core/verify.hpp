@@ -34,8 +34,8 @@ static_assert(sizeof(Event) == sizeof(void*),
 static_assert(sizeof(Style) == sizeof(lv_style_t),
     "Style must be lv_style_t-sized");
 
-static_assert(sizeof(FocusGroup) == sizeof(void*),
-    "FocusGroup must be pointer-sized");
+static_assert(sizeof(Group) == sizeof(void*),
+    "Group must be pointer-sized");
 
 // ==================== Basic Widgets ====================
 
