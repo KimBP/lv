@@ -1,0 +1,4 @@
+name: lvglcpp
+build:
+  cmake-ext: True
+  kconfig: zephyr/Kconfig
