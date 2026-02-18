@@ -35,6 +35,9 @@ public:
     /// Wrap existing button object
     constexpr Button(wrap_t, lv_obj_t* obj) noexcept : ObjectView(obj) {}
 
+    /// Constructor with parent
+    Button(ObjectView parent) : Button(wrap, lv_button_create(parent.get())) {}
+
     /**
      * @brief Create a new Button widget
      * @param parent Parent object
