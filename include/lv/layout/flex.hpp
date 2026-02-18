@@ -180,6 +180,20 @@ public:
 
 // ==================== Factory Functions ====================
 
+class VBox : public Flex
+{
+public:
+    VBox(ObjectView parent) : Flex(parent, LV_FLEX_FLOW_ROW) {};
+    virtual ~VBox() = default;
+};
+
+class HBox : public Flex
+{
+public:
+    HBox(ObjectView parent) : Flex(parent, LV_FLEX_FLOW_COLUMN) {};
+    virtual ~HBox() = default;
+};
+
 /**
  * @brief Create a horizontal flex container (row)
  *
