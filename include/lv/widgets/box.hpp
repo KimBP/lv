@@ -45,6 +45,13 @@ public:
     /// Usage: auto box = lv::Box(lv::wrap, existing_obj);
     constexpr Box(wrap_t, lv_obj_t* obj) noexcept : ObjectView(obj) {}
 
+    /// Constructor taking parent
+    Box(ObjectView parent) noexcept 
+    : ObjectView(lv_obj_create(parent.get()))
+    {
+      lv_obj_remove_flag(m_obj, LV_OBJ_FLAG_SCROLLABLE);
+    }
+
     // Default copy/move - copies the pointer, does NOT create new lv_obj
     Box(const Box&) = default;
     Box& operator=(const Box&) = default;
