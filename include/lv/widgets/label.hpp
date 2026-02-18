@@ -38,6 +38,9 @@ public:
     /// Wrap existing label object
     constexpr Label(wrap_t, lv_obj_t* obj) noexcept : ObjectView(obj) {}
 
+    /// Constructor taking parent
+    constexpr Label(ObjectView parent) : Label(wrap, parent.get()) {}
+
     /**
      * @brief Create a new Label widget
      * @param parent Parent object
