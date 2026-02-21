@@ -16,6 +16,9 @@
 
 namespace lv {
 
+// Forward declarations
+class Style;
+
 // ==================== Feature Detection ====================
 
 /// Compile-time check for object naming support (for UI automation)
@@ -555,16 +558,22 @@ public:
     // ==================== Style ====================
 
     /// Add a style to the object
-    Derived& add_style(lv_style_t* style, lv_style_selector_t selector = 0) noexcept {
+    Derived& add_style(const lv_style_t* style, lv_style_selector_t selector = 0) noexcept {
         lv_obj_add_style(obj(), style, selector);
         return *static_cast<Derived*>(this);
     }
 
+    /// Prevent adding temporary Style objects (would leave dangling style pointer in LVGL)
+    Derived& add_style(Style&&, lv_style_selector_t = 0) noexcept = delete;
+
     /// Remove a style from the object
-    Derived& remove_style(lv_style_t* style, lv_style_selector_t selector = 0) noexcept {
+    Derived& remove_style(const lv_style_t* style, lv_style_selector_t selector = 0) noexcept {
         lv_obj_remove_style(obj(), style, selector);
         return *static_cast<Derived*>(this);
     }
+
+    /// Prevent removing temporary Style objects (nonsensical / likely bug)
+    Derived& remove_style(Style&&, lv_style_selector_t = 0) noexcept = delete;
 
     /// Remove all styles
     Derived& remove_all_styles() noexcept {

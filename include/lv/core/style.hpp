@@ -83,6 +83,7 @@ public:
 
     /// Implicit conversion for C API interop
     [[nodiscard]] operator lv_style_t*() noexcept { return &m_style; }
+    [[nodiscard]] operator const lv_style_t*() const noexcept { return &m_style; }
 
     /// Reset style to empty state
     Style& reset() noexcept {
