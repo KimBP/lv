@@ -175,7 +175,7 @@ Low-level drawing API for Canvas widget and custom graphics.
 
 **Example**:
 ```cpp
-lv::DrawBuf buf(200, 200, LV_COLOR_FORMAT_ARGB8888);
+lv::DrawBuf buf(200, 200, lv::kColorFormat::ARGB8888);
 canvas.draw_buf(buf.get());
 
 lv::Layer layer;
@@ -549,11 +549,11 @@ public:
         auto buttons = lv::hbox(root).gap(10);
 
         lv::Button::create(buttons)
-            .text(LV_SYMBOL_MINUS)
+            .text(lv::symbol::minus)
             .on_click<&MyApp::decrement>(this);
 
         lv::Button::create(buttons)
-            .text(LV_SYMBOL_PLUS)
+            .text(lv::symbol::plus)
             .on_click<&MyApp::increment>(this);
 
         return root;

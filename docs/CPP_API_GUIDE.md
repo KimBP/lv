@@ -78,9 +78,9 @@ auto arc = lv::Arc::create(parent)
     .bg_angles(0, 360)
     .value(75)
     .size(150, 150)
-    .remove_style(nullptr, LV_PART_KNOB)
-    .arc_width(10, LV_PART_MAIN)
-    .arc_width(10, LV_PART_INDICATOR);
+    .remove_style(nullptr, lv::kPart::knob)
+    .arc_width(10, lv::kPart::main)
+    .arc_width(10, lv::kPart::indicator);
 ```
 
 ---
@@ -154,10 +154,10 @@ lv_obj_add_style(obj, &style, LV_PART_MAIN);
 ```cpp
 lv::Style style;
 style.bg_color(lv::rgb(0x000000))
-     .bg_opa(LV_OPA_50)
+     .bg_opa(lv::kOpa::_50)
      .radius(10);
 
-obj.add_style(style, LV_PART_MAIN);
+obj.add_style(style, lv::kPart::main);
 ```
 
 ### Inline Styles
@@ -166,18 +166,18 @@ For one-off styling, use direct style methods on objects:
 
 ```cpp
 // These set styles directly on the object
-arc.arc_color(lv::rgb(0xFF0000))      // LV_PART_MAIN by default
+arc.arc_color(lv::rgb(0xFF0000))      // lv::kPart::main by default
    .arc_width(10);
 
 // With specific part/state selector
-arc.arc_color(lv::rgb(0x00FF00), LV_PART_INDICATOR);
+arc.arc_color(lv::rgb(0x00FF00), lv::kPart::indicator);
 ```
 
 ### Removing Styles
 
 ```cpp
 obj.remove_all_styles();                    // Remove all styles (blank canvas)
-obj.remove_style(nullptr, LV_PART_KNOB);    // Remove styles from specific part
+obj.remove_style(nullptr, lv::kPart::knob); // Remove styles from specific part
 ```
 
 ---
@@ -396,11 +396,11 @@ auto panel = lv::Box::create(parent)
     .size(200, 150)
     .center()
     .bg_color(lv::rgb(0x202020))
-    .bg_opa(LV_OPA_COVER)
+    .bg_opa(lv::kOpa::cover)
     .radius(10)
     .pad_all(10)
-    .flex_flow(LV_FLEX_FLOW_COLUMN)
-    .flex_align(LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
+    .flex_flow(lv::kFlexFlow::column)
+    .flex_align(lv::kFlexAlign::center, lv::kFlexAlign::center, lv::kFlexAlign::center);
 ```
 
 ### Creating an Arc Gauge
@@ -412,10 +412,10 @@ auto gauge = lv::Arc::create(parent)
     .rotation(135)
     .bg_angles(0, 270)
     .value(75)
-    .arc_width(15, LV_PART_MAIN)
-    .arc_width(15, LV_PART_INDICATOR)
-    .arc_color(lv::rgb(0x333333), LV_PART_MAIN)
-    .arc_color(lv::rgb(0x00FF00), LV_PART_INDICATOR)
+    .arc_width(15, lv::kPart::main)
+    .arc_width(15, lv::kPart::indicator)
+    .arc_color(lv::rgb(0x333333), lv::kPart::main)
+    .arc_color(lv::rgb(0x00FF00), lv::kPart::indicator)
     .arc_rounded(true);
 ```
 
@@ -588,7 +588,7 @@ obj.bg_opa(LV_OPA_50);
 // C++ style (more readable)
 arc.align(lv::kAlign::center);
 slider.add_style(style, lv::kPart::knob | lv::kState::pressed);
-obj.bg_opa(LV_OPA_50);
+obj.bg_opa(lv::kOpa::_50);
 
 // Flex layout
 container.flex_flow(lv::kFlexFlow::column)
