@@ -224,9 +224,9 @@ lv::Anim()
 | `.linear()` | Linear path |
 | `.overshoot()` | Overshoot path |
 | `.bounce()` | Bounce path |
-| `.repeat_count(n)` | Number of repetitions |
+| `.repeat(n)` | Number of repetitions |
 | `.repeat_infinite()` | Repeat forever |
-| `.playback_time(ms)` | Playback (reverse) duration |
+| `.playback(delay_ms)` | Playback (reverse) with optional delay |
 | `.start()` | Start the animation |
 
 ---

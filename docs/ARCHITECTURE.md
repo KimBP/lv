@@ -12,7 +12,7 @@ The design philosophy is: **C++ is the only UI language** - no DSL, no XML, no c
 
 ### 1. Zero-Cost Abstractions
 
-Every wrapper class is exactly `sizeof(void*)` - a single pointer to the underlying `lv_obj_t*`. There is no runtime overhead compared to using the C API directly.
+Widget wrapper classes are exactly `sizeof(void*)` - a single pointer to the underlying `lv_obj_t*`. RAII utility types have minimal overhead: `Style` embeds `lv_style_t` directly, `Timer` stores a pointer plus an ownership flag. There is no runtime overhead compared to using the C API directly.
 
 ```cpp
 static_assert(sizeof(lv::Button) == sizeof(void*));
@@ -75,7 +75,7 @@ The library avoids heap allocations in the wrapper layer. State management (`lv:
 │                   lv:: C++ Wrappers                     │
 │    ┌─────────────┬─────────────┬─────────────────────┐  │
 │    │   Widgets   │   Layouts   │   Core Services     │  │
-│    │  (34 types) │ (Flex/Grid) │ (Event/State/Timer) │  │
+│    │  (37 types) │ (Flex/Grid) │ (Event/State/Timer) │  │
 │    └─────────────┴─────────────┴─────────────────────┘  │
 ├─────────────────────────────────────────────────────────┤
 │                      LVGL C API                         │
@@ -101,6 +101,7 @@ The library avoids heap allocations in the wrapper layer. State management (`lv:
 | `font.hpp` | Font handling, `DynamicFont` for runtime TTF loading |
 | `timer.hpp` | RAII `Timer` wrapper |
 | `anim.hpp` | Animation system with path callbacks |
+| `anim_timeline.hpp` | RAII `AnimTimeline` for sequencing animations |
 | `screen.hpp` | Screen management, `Navigator` for screen stack |
 | `state.hpp` | Reactive `State<T>` using LVGL observer system |
 | `component.hpp` | CRTP `Component<Derived>` base for custom widgets |
@@ -108,19 +109,23 @@ The library avoids heap allocations in the wrapper layer. State management (`lv:
 | `image.hpp` | Image handling utilities |
 | `indev.hpp` | Input device wrappers |
 | `focus.hpp` | Focus group (`lv_group_t`) RAII wrapper for keyboard/encoder navigation |
+| `fs.hpp` | RAII `fs::File` and `fs::Directory` for LVGL filesystem |
+| `snapshot.hpp` | Object-to-image capture (requires `LV_USE_SNAPSHOT`) |
+| `gridnav.hpp` | Arrow-key grid navigation (requires `LV_USE_GRIDNAV`) |
 | `theme.hpp` | Theme application |
 | `translation.hpp` | i18n support |
 
 ### Widgets (`include/lv/widgets/`)
 
-34 widget wrappers, each following the same pattern:
+37 widget wrappers, each following the same pattern:
 
 ```cpp
 class WidgetName : public ObjectView,
+                   public ObjectMixin<WidgetName>,
                    public EventMixin<WidgetName>,
                    public StyleMixin<WidgetName> {
 public:
-    explicit WidgetName(ObjectView parent);
+    [[nodiscard]] static WidgetName create(ObjectView parent);
 
     // Widget-specific configuration methods
     WidgetName& property(value) noexcept;
@@ -130,7 +135,7 @@ public:
 };
 ```
 
-**Wrapped widgets**: Label, Button, Switch, Slider, Checkbox, Dropdown, Roller, Textarea, Spinbox, Arc, Bar, Chart, Table, List, Menu, TabView, TileView, Calendar, Keyboard, ButtonMatrix, Canvas, LED, Line, Spinner, Scale, Span, Window, MsgBox, ImageButton, AnimImage, Box, FileExplorer (conditional)
+**Wrapped widgets**: Box (always available), Label, Button, Switch, Slider, Checkbox, Dropdown, Roller, Textarea, Spinbox, Arc, Bar, Chart, Table, List, Menu, Tabview, Tileview, Calendar, Keyboard, ButtonMatrix, Canvas, Led, Line, Spinner, Scale, Spangroup, Window, Msgbox, ImageButton, AnimImage, Image, ArcLabel, IMEPinyin, Texture3D, Lottie, FileExplorer (conditional on respective `LV_USE_*`)
 
 ### Layouts (`include/lv/layout/`)
 
@@ -139,14 +144,17 @@ public:
 | `flex.hpp` | Flexbox layout (`hbox()`, `vbox()`) with gap, alignment, grow |
 | `grid.hpp` | CSS Grid layout with `fr()` units, spanning, alignment |
 
-### Display (`include/lv/display/`)
+### Display (`include/lv/core/display.hpp`)
 
-| File | Purpose |
-|------|---------|
-| `display.hpp` | Base display interface |
-| `x11_display.hpp` | X11 backend for Linux desktop |
-| `sdl_display.hpp` | SDL2 backend for cross-platform |
-| `fb_display.hpp` | Framebuffer backend for embedded |
+All display backends are in a single file:
+
+| Class | Purpose |
+|-------|---------|
+| `Display` | Base display interface |
+| `X11Display` | X11 backend for Linux desktop |
+| `SDLDisplay` | SDL2 backend for cross-platform |
+| `FBDisplay` | Framebuffer backend for embedded |
+| `DRMDisplay` | DRM/KMS backend for embedded Linux |
 
 ### Draw API (`include/lv/draw/`)
 
@@ -255,20 +263,21 @@ Events use a CRTP mixin (`EventMixin<Derived>`) that provides:
 template<typename Derived>
 class EventMixin {
 public:
-    // Stateless lambda
-    template<auto Fn>
-    Derived& on_click() noexcept;
+    // Stateless lambda (lv_event_t* or lv::Event)
+    template<typename F>
+    Derived& on_click(F&& fn) noexcept;
 
-    // Member function pointer
+    // Member function pointer (zero-cost, recommended for stateful callbacks)
     template<auto MemFn, typename T>
     Derived& on_click(T* instance) noexcept;
 
-    // Generic event registration
-    template<auto Fn>
-    Derived& on_event(lv_event_code_t code) noexcept;
+    // Generic event registration (lambda)
+    template<typename F>
+    Derived& on(lv_event_code_t code, F&& fn) noexcept;
 
+    // Generic event registration (member function pointer)
     template<auto MemFn, typename T>
-    Derived& on_event(lv_event_code_t code, T* instance) noexcept;
+    Derived& on(lv_event_code_t code, T* instance) noexcept;
 };
 ```
 
@@ -278,7 +287,7 @@ public:
 - `on_value_changed()`
 - `on_focused()`, `on_defocused()`
 - `on_scroll()`, `on_scroll_end()`
-- Generic `on_event()` for any LVGL event code
+- Generic `on()` for any LVGL event code
 
 ### Implementation Detail
 
@@ -401,14 +410,19 @@ Stack-based screen management:
 ```cpp
 lv::Navigator nav;
 
+// Set initial screen
+nav.set_root(home_screen);
+
 // Push screen with animation
-nav.push<SettingsScreen>(lv::screen_anim::move_left);
+nav.push(settings_screen, lv::screen_anim::move_left, 300);
 
-// Pop back
-nav.pop(lv::screen_anim::move_right);
+// Go back to previous screen
+nav.back(300);
 
-// Replace current
-nav.replace<HomeScreen>();
+// Query state
+nav.can_back();   // true if depth > 1
+nav.current();    // current screen ObjectView
+nav.depth();      // stack depth
 ```
 
 ---
@@ -434,7 +448,7 @@ button_style
     .radius(8)
     .padding(12);
 
-button.add_style(&button_style);
+button.add_style(button_style);
 ```
 
 ---
@@ -472,16 +486,20 @@ include/lv/
 │   ├── font.hpp           # Font handling
 │   ├── timer.hpp          # Timer wrapper
 │   ├── anim.hpp           # Animation
+│   ├── anim_timeline.hpp  # Animation timeline
 │   ├── screen.hpp         # Screen, Navigator
 │   ├── state.hpp          # Reactive State<T>
 │   ├── component.hpp      # Component base
+│   ├── fs.hpp             # Filesystem (File, Directory)
+│   ├── snapshot.hpp       # Object screenshot capture
+│   ├── gridnav.hpp        # Grid keyboard navigation
 │   ├── string_utils.hpp   # String utilities
 │   └── ...
 ├── widgets/
 │   ├── label.hpp
 │   ├── button.hpp
 │   ├── chart.hpp
-│   └── ... (34 widgets)
+│   └── ... (37 widgets)
 ├── draw/
 │   ├── draw.hpp           # Umbrella header
 │   ├── draw_buf.hpp       # DrawBuf RAII wrapper
@@ -496,10 +514,11 @@ include/lv/
 ├── layout/
 │   ├── flex.hpp           # hbox, vbox
 │   └── grid.hpp           # CSS Grid
-└── display/
-    ├── x11_display.hpp
-    ├── sdl_display.hpp
-    └── fb_display.hpp
+└── libs/
+    ├── qrcode.hpp
+    ├── barcode.hpp
+    ├── gif.hpp
+    └── gltf.hpp
 ```
 
 ---
@@ -565,7 +584,6 @@ int main() {
 |------|--------|
 | `lv_chart_series_t*` | Raw pointer - should be visible |
 | `LV_SYMBOL_*` macros | Required for string concatenation |
-| File system API | Platform-specific |
 
 ---
 
@@ -651,7 +669,7 @@ available for application use.
 | Context | Set | Get | Typed get |
 |---------|-----|-----|-----------|
 | Widget (Button, Grid, etc.) | `.user_data(ptr)` | `.user_data()` | `.user_data_as<T>()` |
-| Raw `ObjectView` / `root()` | `lv_obj_set_user_data(obj.get(), ptr)` | `.get_user_data()` | `.get_user_data<T>()` |
+| Raw `ObjectView` / `root()` | `lv_obj_set_user_data(obj, ptr)` | `.get_user_data()` | `.get_user_data<T>()` |
 
 Widgets inherit both setter and getter from `ObjectMixin`. Raw `ObjectView` (e.g. from
 `Component::root()`) provides `get_user_data()` / `get_user_data<T>()` directly.
