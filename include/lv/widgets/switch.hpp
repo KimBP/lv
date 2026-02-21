@@ -12,6 +12,10 @@
 
 namespace lv {
 
+#if LV_USE_OBSERVER
+template<typename T> class State;  // forward declaration for bind()
+#endif
+
 /**
  * @brief Switch (toggle) widget wrapper
  *

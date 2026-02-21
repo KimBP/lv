@@ -372,11 +372,13 @@ public:
 
     // ==================== Flex Layout ====================
 
+#if LV_USE_FLEX
     /// Set flex grow factor (for children of flex containers)
     Derived& grow(uint8_t factor = 1) noexcept {
         lv_obj_set_flex_grow(obj(), factor);
         return *static_cast<Derived*>(this);
     }
+#endif
 
     // ==================== Visibility ====================
 
@@ -502,6 +504,7 @@ public:
 
     // ==================== Flex Layout ====================
 
+#if LV_USE_FLEX
     /// Set flex flow direction
     Derived& flex_flow(lv_flex_flow_t flow) noexcept {
         lv_obj_set_flex_flow(obj(), flow);
@@ -513,6 +516,7 @@ public:
         lv_obj_set_flex_align(obj(), main, cross, track);
         return *static_cast<Derived*>(this);
     }
+#endif
 
     // ==================== Layout ====================
 

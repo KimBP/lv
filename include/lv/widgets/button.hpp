@@ -9,7 +9,10 @@
 #include "../core/object.hpp"
 #include "../core/event.hpp"
 #include "../core/style.hpp"
+#include "../core/color.hpp"
+#if LV_USE_LABEL
 #include "label.hpp"
+#endif
 
 namespace lv {
 
@@ -25,18 +28,6 @@ class Button : public ObjectView,
                public ObjectMixin<Button>,
                public EventMixin<Button>,
                public StyleMixin<Button> {
-private:
-    [[nodiscard]] static lv_obj_t* first_label_child(lv_obj_t* parent) noexcept {
-        const uint32_t child_count = lv_obj_get_child_count(parent);
-        for (uint32_t i = 0; i < child_count; ++i) {
-            lv_obj_t* child = lv_obj_get_child(parent, static_cast<int32_t>(i));
-            if (child && lv_obj_check_type(child, &lv_label_class)) {
-                return child;
-            }
-        }
-        return nullptr;
-    }
-
 public:
     /// Default constructor (null button)
     constexpr Button() noexcept : ObjectView(nullptr) {}
@@ -57,8 +48,9 @@ public:
         return create(parent.get());
     }
 
-    // ==================== Text ====================
+    // ==================== Text (requires LV_USE_LABEL) ====================
 
+#if LV_USE_LABEL
     /// Set centered text label on the button (creates label on first call)
     Button& text(const char* txt) noexcept {
         lv_obj_t* lbl = first_label_child(m_obj);
@@ -95,6 +87,20 @@ public:
         }
         return *this;
     }
+
+private:
+    [[nodiscard]] static lv_obj_t* first_label_child(lv_obj_t* parent) noexcept {
+        const uint32_t child_count = lv_obj_get_child_count(parent);
+        for (uint32_t i = 0; i < child_count; ++i) {
+            lv_obj_t* child = lv_obj_get_child(parent, static_cast<int32_t>(i));
+            if (child && lv_obj_check_type(child, &lv_label_class)) {
+                return child;
+            }
+        }
+        return nullptr;
+    }
+public:
+#endif // LV_USE_LABEL
 
     // ==================== State ====================
 
@@ -204,6 +210,7 @@ public:
 };
 
 
+#if LV_USE_LABEL
 /**
  * @brief Create a simple text button
  */
@@ -217,5 +224,6 @@ inline Button text_button(ObjectView parent, const char* text) {
 inline Button toggle_button(ObjectView parent, const char* text) {
     return Button::create(parent).text(text).checkable();
 }
+#endif // LV_USE_LABEL
 
 } // namespace lv

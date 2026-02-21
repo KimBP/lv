@@ -37,6 +37,7 @@ namespace image_src {
 
 // ==================== Image Alignment ====================
 
+#if LV_USE_IMAGE
 namespace image_align {
     constexpr auto top_left = LV_IMAGE_ALIGN_TOP_LEFT;
     constexpr auto top_mid = LV_IMAGE_ALIGN_TOP_MID;
@@ -52,6 +53,7 @@ namespace image_align {
     constexpr auto contain = LV_IMAGE_ALIGN_CONTAIN;
     constexpr auto cover = LV_IMAGE_ALIGN_COVER;
 } // namespace image_align
+#endif // LV_USE_IMAGE
 
 // ==================== Image Descriptor Wrapper ====================
 

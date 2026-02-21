@@ -72,67 +72,128 @@
 #endif
 
 // Layout
+#if LV_USE_FLEX
 #include "layout/flex.hpp"
+#endif
+#if LV_USE_GRID
 #include "layout/grid.hpp"
+#endif
 
-// Widgets - Basic
+// Widgets - Basic (Box is always available: plain lv_obj_create wrapper)
 #include "widgets/box.hpp"
+#if LV_USE_LABEL
 #include "widgets/label.hpp"
+#endif
+#if LV_USE_BUTTON
 #include "widgets/button.hpp"
+#endif
+#if LV_USE_IMAGE
 #include "widgets/image.hpp"
+#endif
+#if LV_USE_LINE
 #include "widgets/line.hpp"
+#endif
+#if LV_USE_LED
 #include "widgets/led.hpp"
+#endif
 
 // Widgets - Input
+#if LV_USE_SWITCH
 #include "widgets/switch.hpp"
+#endif
+#if LV_USE_SLIDER
 #include "widgets/slider.hpp"
+#endif
+#if LV_USE_DROPDOWN
 #include "widgets/dropdown.hpp"
+#endif
+#if LV_USE_CHECKBOX
 #include "widgets/checkbox.hpp"
+#endif
+#if LV_USE_ROLLER
 #include "widgets/roller.hpp"
+#endif
+#if LV_USE_TEXTAREA
 #include "widgets/textarea.hpp"
+#endif
+#if LV_USE_SPINBOX
 #include "widgets/spinbox.hpp"
+#endif
+#if LV_USE_KEYBOARD
 #include "widgets/keyboard.hpp"
+#endif
+#if LV_USE_BUTTONMATRIX
 #include "widgets/buttonmatrix.hpp"
+#endif
 
 // Widgets - Display
+#if LV_USE_ARC
 #include "widgets/arc.hpp"
+#endif
+#if LV_USE_BAR
 #include "widgets/bar.hpp"
+#endif
+#if LV_USE_SPINNER
 #include "widgets/spinner.hpp"
+#endif
+#if LV_USE_CHART
 #include "widgets/chart.hpp"
+#endif
+#if LV_USE_SCALE
 #include "widgets/scale.hpp"
+#endif
+#if LV_USE_TABLE
 #include "widgets/table.hpp"
+#endif
+#if LV_USE_CANVAS
 #include "widgets/canvas.hpp"
+#endif
+#if LV_USE_ANIMIMG
 #include "widgets/animimage.hpp"
+#endif
+#if LV_USE_SPAN
 #include "widgets/span.hpp"
+#endif
 
 // Widgets - Containers
+#if LV_USE_LIST
 #include "widgets/list.hpp"
+#endif
+#if LV_USE_MENU
 #include "widgets/menu.hpp"
+#endif
+#if LV_USE_TABVIEW
 #include "widgets/tabview.hpp"
+#endif
+#if LV_USE_TILEVIEW
 #include "widgets/tileview.hpp"
+#endif
+#if LV_USE_WIN
 #include "widgets/win.hpp"
+#endif
+#if LV_USE_MSGBOX
 #include "widgets/msgbox.hpp"
+#endif
+#if LV_USE_CALENDAR
 #include "widgets/calendar.hpp"
+#endif
+#if LV_USE_IMAGEBUTTON
 #include "widgets/imagebutton.hpp"
+#endif
 
 // Widgets - Other (conditional)
 #if LV_USE_FILE_EXPLORER
 #include "widgets/file_explorer.hpp"
 #endif
-
 #if LV_USE_ARCLABEL
 #include "widgets/arclabel.hpp"
 #endif
-
 #if LV_USE_IME_PINYIN
 #include "widgets/ime_pinyin.hpp"
 #endif
-
 #if LV_USE_3DTEXTURE
 #include "widgets/texture3d.hpp"
 #endif
-
-// Lottie animation (requires ThorVG)
 #if LV_USE_LOTTIE
 #include "widgets/lottie.hpp"
 #endif
@@ -141,15 +202,12 @@
 #if LV_USE_QRCODE
 #include "libs/qrcode.hpp"
 #endif
-
 #if LV_USE_BARCODE
 #include "libs/barcode.hpp"
 #endif
-
 #if LV_USE_GIF
 #include "libs/gif.hpp"
 #endif
-
 #if LV_USE_GLTF
 #include "libs/gltf.hpp"
 #endif

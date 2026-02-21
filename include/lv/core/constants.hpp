@@ -110,7 +110,9 @@ namespace kFlag {
     constexpr auto ignore_layout       = LV_OBJ_FLAG_IGNORE_LAYOUT;
     constexpr auto floating            = LV_OBJ_FLAG_FLOATING;
     constexpr auto overflow_visible    = LV_OBJ_FLAG_OVERFLOW_VISIBLE;
+#if LV_USE_FLEX
     constexpr auto flex_in_new_track   = LV_OBJ_FLAG_FLEX_IN_NEW_TRACK;
+#endif
     constexpr auto user_1              = LV_OBJ_FLAG_USER_1;
     constexpr auto user_2              = LV_OBJ_FLAG_USER_2;
 #ifdef LV_OBJ_FLAG_USER_3
@@ -160,6 +162,7 @@ namespace kDir {
 // Flex Layout
 // ============================================================================
 
+#if LV_USE_FLEX
 namespace kFlexFlow {
     constexpr auto row            = LV_FLEX_FLOW_ROW;
     constexpr auto column         = LV_FLEX_FLOW_COLUMN;
@@ -177,11 +180,13 @@ namespace kFlexAlign {
     constexpr auto space_around  = LV_FLEX_ALIGN_SPACE_AROUND;
     constexpr auto space_between = LV_FLEX_ALIGN_SPACE_BETWEEN;
 }
+#endif
 
 // ============================================================================
 // Grid Layout
 // ============================================================================
 
+#if LV_USE_GRID
 namespace kGridAlign {
     constexpr auto start         = LV_GRID_ALIGN_START;
     constexpr auto center        = LV_GRID_ALIGN_CENTER;
@@ -191,6 +196,7 @@ namespace kGridAlign {
     constexpr auto space_around  = LV_GRID_ALIGN_SPACE_AROUND;
     constexpr auto space_between = LV_GRID_ALIGN_SPACE_BETWEEN;
 }
+#endif
 
 // ============================================================================
 // Text
@@ -213,6 +219,7 @@ namespace kTextDecor {
 // Label
 // ============================================================================
 
+#if LV_USE_LABEL
 namespace kLabelLongMode {
     constexpr auto wrap            = LV_LABEL_LONG_WRAP;
     constexpr auto dot             = LV_LABEL_LONG_DOT;
@@ -220,41 +227,49 @@ namespace kLabelLongMode {
     constexpr auto scroll_circular = LV_LABEL_LONG_SCROLL_CIRCULAR;
     constexpr auto clip            = LV_LABEL_LONG_CLIP;
 }
+#endif
 
 // ============================================================================
 // Arc
 // ============================================================================
 
+#if LV_USE_ARC
 namespace kArcMode {
     constexpr auto normal      = LV_ARC_MODE_NORMAL;
     constexpr auto symmetrical = LV_ARC_MODE_SYMMETRICAL;
     constexpr auto reverse     = LV_ARC_MODE_REVERSE;
 }
+#endif
 
 // ============================================================================
 // Bar
 // ============================================================================
 
+#if LV_USE_BAR
 namespace kBarMode {
     constexpr auto normal      = LV_BAR_MODE_NORMAL;
     constexpr auto symmetrical = LV_BAR_MODE_SYMMETRICAL;
     constexpr auto range       = LV_BAR_MODE_RANGE;
 }
+#endif
 
 // ============================================================================
 // Slider
 // ============================================================================
 
+#if LV_USE_SLIDER
 namespace kSliderMode {
     constexpr auto normal      = LV_SLIDER_MODE_NORMAL;
     constexpr auto symmetrical = LV_SLIDER_MODE_SYMMETRICAL;
     constexpr auto range       = LV_SLIDER_MODE_RANGE;
 }
+#endif
 
 // ============================================================================
 // Chart
 // ============================================================================
 
+#if LV_USE_CHART
 namespace kChartType {
     constexpr auto none    = LV_CHART_TYPE_NONE;
     constexpr auto line    = LV_CHART_TYPE_LINE;
@@ -273,6 +288,7 @@ namespace kChartUpdateMode {
     constexpr auto shift    = LV_CHART_UPDATE_MODE_SHIFT;
     constexpr auto circular = LV_CHART_UPDATE_MODE_CIRCULAR;
 }
+#endif
 
 // ============================================================================
 // Gradient
@@ -444,6 +460,7 @@ namespace kEvent {
 // Keyboard Modes
 // ============================================================================
 
+#if LV_USE_KEYBOARD
 namespace kKeyboardMode {
     constexpr auto text_lower   = LV_KEYBOARD_MODE_TEXT_LOWER;
     constexpr auto text_upper   = LV_KEYBOARD_MODE_TEXT_UPPER;
@@ -454,6 +471,7 @@ namespace kKeyboardMode {
     constexpr auto user3        = LV_KEYBOARD_MODE_USER_3;
     constexpr auto user4        = LV_KEYBOARD_MODE_USER_4;
 }
+#endif
 
 // ============================================================================
 // Blend Mode
@@ -473,8 +491,12 @@ namespace kBlendMode {
 
 namespace kLayout {
     constexpr auto none = LV_LAYOUT_NONE;
+#if LV_USE_FLEX
     constexpr auto flex = LV_LAYOUT_FLEX;
+#endif
+#if LV_USE_GRID
     constexpr auto grid = LV_LAYOUT_GRID;
+#endif
 }
 
 // ============================================================================

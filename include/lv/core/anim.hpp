@@ -147,6 +147,7 @@ public:
         return *this;
     }
 
+#if LV_USE_ARC
     /// Animate arc rotation (for Arc widgets - uses lv_arc_set_rotation)
     Anim& exec_arc_rotation(ObjectView obj) noexcept {
         lv_anim_set_var(&m_anim, obj.get());
@@ -155,6 +156,7 @@ public:
         });
         return *this;
     }
+#endif
 
     /// Animate transform scale style property (uniform x/y scale)
     Anim& exec_scale(ObjectView obj) noexcept {
@@ -165,6 +167,7 @@ public:
         return *this;
     }
 
+#if LV_USE_IMAGE
     /// Animate image scale property (for Image widgets)
     Anim& exec_image_scale(ObjectView obj) noexcept {
         lv_anim_set_var(&m_anim, obj.get());
@@ -173,6 +176,7 @@ public:
         });
         return *this;
     }
+#endif
 
     /// Animate object X position
     Anim& exec_x(ObjectView obj) noexcept {
@@ -210,6 +214,7 @@ public:
         return *this;
     }
 
+#if LV_USE_OBSERVER
     /// Animate integer subject value (for State<int>/IntState)
     Anim& exec_int_subject(lv_subject_t* subject) noexcept {
         lv_anim_set_var(&m_anim, subject);
@@ -218,7 +223,9 @@ public:
         });
         return *this;
     }
+#endif // LV_USE_OBSERVER
 
+#if LV_USE_ARC
     /// Animate arc value
     Anim& exec_arc_value(ObjectView obj) noexcept {
         lv_anim_set_var(&m_anim, obj.get());
@@ -245,7 +252,9 @@ public:
         });
         return *this;
     }
+#endif
 
+#if LV_USE_BAR
     /// Animate bar value
     Anim& exec_bar_value(ObjectView obj) noexcept {
         lv_anim_set_var(&m_anim, obj.get());
@@ -254,7 +263,9 @@ public:
         });
         return *this;
     }
+#endif
 
+#if LV_USE_SLIDER
     /// Animate slider value
     Anim& exec_slider_value(ObjectView obj) noexcept {
         lv_anim_set_var(&m_anim, obj.get());
@@ -263,6 +274,7 @@ public:
         });
         return *this;
     }
+#endif
 
     // ==================== Values ====================
 

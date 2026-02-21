@@ -475,6 +475,7 @@ public:
         return *this;
     }
 
+#if LV_USE_FLEX
     Style& flex_flow(lv_flex_flow_t flow) noexcept {
         lv_style_set_flex_flow(&m_style, flow);
         return *this;
@@ -499,6 +500,7 @@ public:
         lv_style_set_flex_grow(&m_style, grow);
         return *this;
     }
+#endif // LV_USE_FLEX
 
     // ==================== Alignment ====================
 
@@ -889,6 +891,7 @@ public:
         return *static_cast<Derived*>(this);
     }
 
+#if LV_USE_FLEX
     // ==================== Flex Layout Style ====================
 
     Derived& flex_main_place(lv_flex_align_t place, lv_style_selector_t sel = 0) noexcept {
@@ -905,6 +908,7 @@ public:
         lv_obj_set_style_flex_track_place(obj(), place, sel);
         return *static_cast<Derived*>(this);
     }
+#endif // LV_USE_FLEX
 
     // ==================== Size (selector-based, for styling widget parts) ====================
 

@@ -39,118 +39,183 @@ static_assert(sizeof(Group) == sizeof(void*),
 
 // ==================== Basic Widgets ====================
 
-static_assert(sizeof(Label) == sizeof(void*),
-    "Label must be pointer-sized");
-
-static_assert(sizeof(Button) == sizeof(void*),
-    "Button must be pointer-sized");
-
-static_assert(sizeof(Image) == sizeof(void*),
-    "Image must be pointer-sized");
-
-static_assert(sizeof(Line) == sizeof(void*),
-    "Line must be pointer-sized");
-
-static_assert(sizeof(Led) == sizeof(void*),
-    "Led must be pointer-sized");
-
-// ==================== Input Widgets ====================
-
-static_assert(sizeof(Switch) == sizeof(void*),
-    "Switch must be pointer-sized");
-
-static_assert(sizeof(Slider) == sizeof(void*),
-    "Slider must be pointer-sized");
-
-static_assert(sizeof(Dropdown) == sizeof(void*),
-    "Dropdown must be pointer-sized");
-
-static_assert(sizeof(Checkbox) == sizeof(void*),
-    "Checkbox must be pointer-sized");
-
-static_assert(sizeof(Roller) == sizeof(void*),
-    "Roller must be pointer-sized");
-
-static_assert(sizeof(Textarea) == sizeof(void*),
-    "Textarea must be pointer-sized");
-
-static_assert(sizeof(Spinbox) == sizeof(void*),
-    "Spinbox must be pointer-sized");
-
-static_assert(sizeof(Keyboard) == sizeof(void*),
-    "Keyboard must be pointer-sized");
-
-static_assert(sizeof(ButtonMatrix) == sizeof(void*),
-    "ButtonMatrix must be pointer-sized");
-
-// ==================== Display Widgets ====================
-
-static_assert(sizeof(Arc) == sizeof(void*),
-    "Arc must be pointer-sized");
-
-static_assert(sizeof(Bar) == sizeof(void*),
-    "Bar must be pointer-sized");
-
-static_assert(sizeof(Spinner) == sizeof(void*),
-    "Spinner must be pointer-sized");
-
-static_assert(sizeof(Chart) == sizeof(void*),
-    "Chart must be pointer-sized");
-
-static_assert(sizeof(Scale) == sizeof(void*),
-    "Scale must be pointer-sized");
-
-static_assert(sizeof(Table) == sizeof(void*),
-    "Table must be pointer-sized");
-
-static_assert(sizeof(Canvas) == sizeof(void*),
-    "Canvas must be pointer-sized");
-
-static_assert(sizeof(AnimImage) == sizeof(void*),
-    "AnimImage must be pointer-sized");
-
-static_assert(sizeof(Spangroup) == sizeof(void*),
-    "Spangroup must be pointer-sized");
-
-// ==================== Container Widgets ====================
-
-static_assert(sizeof(List) == sizeof(void*),
-    "List must be pointer-sized");
-
-static_assert(sizeof(Menu) == sizeof(void*),
-    "Menu must be pointer-sized");
-
-static_assert(sizeof(Tabview) == sizeof(void*),
-    "Tabview must be pointer-sized");
-
-static_assert(sizeof(Tileview) == sizeof(void*),
-    "Tileview must be pointer-sized");
-
-static_assert(sizeof(Window) == sizeof(void*),
-    "Window must be pointer-sized");
-
-static_assert(sizeof(Msgbox) == sizeof(void*),
-    "Msgbox must be pointer-sized");
-
-static_assert(sizeof(Calendar) == sizeof(void*),
-    "Calendar must be pointer-sized");
-
-static_assert(sizeof(ImageButton) == sizeof(void*),
-    "ImageButton must be pointer-sized");
-
-// ==================== Layout & Container Helpers ====================
-
 static_assert(sizeof(Box) == sizeof(void*),
     "Box must be pointer-sized");
 
+#if LV_USE_LABEL
+static_assert(sizeof(Label) == sizeof(void*),
+    "Label must be pointer-sized");
+#endif
+
+#if LV_USE_BUTTON
+static_assert(sizeof(Button) == sizeof(void*),
+    "Button must be pointer-sized");
+#endif
+
+#if LV_USE_IMAGE
+static_assert(sizeof(Image) == sizeof(void*),
+    "Image must be pointer-sized");
+#endif
+
+#if LV_USE_LINE
+static_assert(sizeof(Line) == sizeof(void*),
+    "Line must be pointer-sized");
+#endif
+
+#if LV_USE_LED
+static_assert(sizeof(Led) == sizeof(void*),
+    "Led must be pointer-sized");
+#endif
+
+// ==================== Input Widgets ====================
+
+#if LV_USE_SWITCH
+static_assert(sizeof(Switch) == sizeof(void*),
+    "Switch must be pointer-sized");
+#endif
+
+#if LV_USE_SLIDER
+static_assert(sizeof(Slider) == sizeof(void*),
+    "Slider must be pointer-sized");
+#endif
+
+#if LV_USE_DROPDOWN
+static_assert(sizeof(Dropdown) == sizeof(void*),
+    "Dropdown must be pointer-sized");
+#endif
+
+#if LV_USE_CHECKBOX
+static_assert(sizeof(Checkbox) == sizeof(void*),
+    "Checkbox must be pointer-sized");
+#endif
+
+#if LV_USE_ROLLER
+static_assert(sizeof(Roller) == sizeof(void*),
+    "Roller must be pointer-sized");
+#endif
+
+#if LV_USE_TEXTAREA
+static_assert(sizeof(Textarea) == sizeof(void*),
+    "Textarea must be pointer-sized");
+#endif
+
+#if LV_USE_SPINBOX
+static_assert(sizeof(Spinbox) == sizeof(void*),
+    "Spinbox must be pointer-sized");
+#endif
+
+#if LV_USE_KEYBOARD
+static_assert(sizeof(Keyboard) == sizeof(void*),
+    "Keyboard must be pointer-sized");
+#endif
+
+#if LV_USE_BUTTONMATRIX
+static_assert(sizeof(ButtonMatrix) == sizeof(void*),
+    "ButtonMatrix must be pointer-sized");
+#endif
+
+// ==================== Display Widgets ====================
+
+#if LV_USE_ARC
+static_assert(sizeof(Arc) == sizeof(void*),
+    "Arc must be pointer-sized");
+#endif
+
+#if LV_USE_BAR
+static_assert(sizeof(Bar) == sizeof(void*),
+    "Bar must be pointer-sized");
+#endif
+
+#if LV_USE_SPINNER
+static_assert(sizeof(Spinner) == sizeof(void*),
+    "Spinner must be pointer-sized");
+#endif
+
+#if LV_USE_CHART
+static_assert(sizeof(Chart) == sizeof(void*),
+    "Chart must be pointer-sized");
+#endif
+
+#if LV_USE_SCALE
+static_assert(sizeof(Scale) == sizeof(void*),
+    "Scale must be pointer-sized");
+#endif
+
+#if LV_USE_TABLE
+static_assert(sizeof(Table) == sizeof(void*),
+    "Table must be pointer-sized");
+#endif
+
+#if LV_USE_CANVAS
+static_assert(sizeof(Canvas) == sizeof(void*),
+    "Canvas must be pointer-sized");
+#endif
+
+#if LV_USE_ANIMIMG
+static_assert(sizeof(AnimImage) == sizeof(void*),
+    "AnimImage must be pointer-sized");
+#endif
+
+#if LV_USE_SPAN
+static_assert(sizeof(Spangroup) == sizeof(void*),
+    "Spangroup must be pointer-sized");
+#endif
+
+// ==================== Container Widgets ====================
+
+#if LV_USE_LIST
+static_assert(sizeof(List) == sizeof(void*),
+    "List must be pointer-sized");
+#endif
+
+#if LV_USE_MENU
+static_assert(sizeof(Menu) == sizeof(void*),
+    "Menu must be pointer-sized");
+#endif
+
+#if LV_USE_TABVIEW
+static_assert(sizeof(Tabview) == sizeof(void*),
+    "Tabview must be pointer-sized");
+#endif
+
+#if LV_USE_TILEVIEW
+static_assert(sizeof(Tileview) == sizeof(void*),
+    "Tileview must be pointer-sized");
+#endif
+
+#if LV_USE_WIN
+static_assert(sizeof(Window) == sizeof(void*),
+    "Window must be pointer-sized");
+#endif
+
+#if LV_USE_MSGBOX
+static_assert(sizeof(Msgbox) == sizeof(void*),
+    "Msgbox must be pointer-sized");
+#endif
+
+#if LV_USE_CALENDAR
+static_assert(sizeof(Calendar) == sizeof(void*),
+    "Calendar must be pointer-sized");
+#endif
+
+#if LV_USE_IMAGEBUTTON
+static_assert(sizeof(ImageButton) == sizeof(void*),
+    "ImageButton must be pointer-sized");
+#endif
+
+// ==================== Layout ====================
+
+#if LV_USE_GRID
 static_assert(sizeof(Grid) == sizeof(void*),
     "Grid must be pointer-sized");
+#endif
 
+#if LV_USE_FLEX
 static_assert(sizeof(Flex) == sizeof(void*),
     "Flex must be pointer-sized");
+#endif
 
 // ==================== Optional Widgets ====================
-// These are conditionally compiled based on lv_conf.h
 
 #if LV_USE_LOTTIE
 static_assert(sizeof(Lottie) == sizeof(void*),
@@ -200,7 +265,6 @@ static_assert(sizeof(FileExplorer) == sizeof(void*),
 // ==================== State Types ====================
 
 #if LV_USE_OBSERVER
-// State types have minimal overhead (subject + value + alignment)
 static_assert(sizeof(IntState) <= sizeof(lv_subject_t) + sizeof(int32_t) + alignof(lv_subject_t),
     "IntState has excessive overhead");
 
