@@ -73,6 +73,16 @@
 #include "core/translation.hpp"
 #endif
 
+// Snapshot (requires LV_USE_SNAPSHOT)
+#if LV_USE_SNAPSHOT
+#include "core/snapshot.hpp"
+#endif
+
+// Grid navigation (requires LV_USE_GRIDNAV)
+#if LV_USE_GRIDNAV
+#include "core/gridnav.hpp"
+#endif
+
 // Layout
 #if LV_USE_FLEX
 #include "layout/flex.hpp"
