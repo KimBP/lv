@@ -37,6 +37,9 @@ static_assert(sizeof(Style) == sizeof(lv_style_t),
 static_assert(sizeof(Group) == sizeof(void*),
     "Group must be pointer-sized");
 
+static_assert(sizeof(AnimTimeline) == sizeof(void*),
+    "AnimTimeline must be pointer-sized");
+
 // ==================== Basic Widgets ====================
 
 static_assert(sizeof(Box) == sizeof(void*),
