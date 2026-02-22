@@ -83,6 +83,21 @@
 #include "core/gridnav.hpp"
 #endif
 
+// System monitor (requires LV_USE_SYSMON)
+#if LV_USE_SYSMON
+#include "others/sysmon.hpp"
+#endif
+
+// Monkey testing (requires LV_USE_MONKEY)
+#if LV_USE_MONKEY
+#include "others/monkey.hpp"
+#endif
+
+// Fragment lifecycle (requires LV_USE_FRAGMENT)
+#if LV_USE_FRAGMENT
+#include "others/fragment.hpp"
+#endif
+
 // Layout
 #if LV_USE_FLEX
 #include "layout/flex.hpp"
@@ -222,6 +237,9 @@
 #endif
 #if LV_USE_GLTF
 #include "libs/gltf.hpp"
+#endif
+#if LV_USE_SVG
+#include "libs/svg.hpp"
 #endif
 
 // State (requires LV_USE_OBSERVER)

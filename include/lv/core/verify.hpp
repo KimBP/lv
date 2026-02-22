@@ -265,6 +265,26 @@ static_assert(sizeof(FileExplorer) == sizeof(void*),
     "FileExplorer must be pointer-sized");
 #endif
 
+// ==================== Others ====================
+
+#if LV_USE_MONKEY
+static_assert(sizeof(Monkey) == sizeof(void*),
+    "Monkey must be pointer-sized");
+#endif
+
+#if LV_USE_FRAGMENT
+static_assert(sizeof(FragmentManager) == sizeof(void*),
+    "FragmentManager must be pointer-sized");
+#endif
+
+#if LV_USE_SVG
+static_assert(sizeof(svg::Node) == sizeof(void*),
+    "svg::Node must be pointer-sized");
+
+static_assert(sizeof(svg::RenderObj) == sizeof(void*),
+    "svg::RenderObj must be pointer-sized");
+#endif
+
 // ==================== State Types ====================
 
 #if LV_USE_OBSERVER

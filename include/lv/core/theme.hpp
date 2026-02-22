@@ -124,6 +124,11 @@ inline bool theme_default_is_inited() noexcept {
     return lv_theme_default_is_inited();
 }
 
+/// Deinitialize default theme
+inline void theme_default_deinit() noexcept {
+    lv_theme_default_deinit();
+}
+
 #endif // LV_USE_THEME_DEFAULT
 
 // ==================== Simple Theme ====================
@@ -135,6 +140,21 @@ inline lv_theme_t* theme_simple_init(lv_display_t* disp) noexcept {
     return lv_theme_simple_init(disp);
 }
 
+/// Get simple theme
+inline lv_theme_t* theme_simple_get() noexcept {
+    return lv_theme_simple_get();
+}
+
+/// Check if simple theme is inited
+inline bool theme_simple_is_inited() noexcept {
+    return lv_theme_simple_is_inited();
+}
+
+/// Deinitialize simple theme
+inline void theme_simple_deinit() noexcept {
+    lv_theme_simple_deinit();
+}
+
 #endif // LV_USE_THEME_SIMPLE
 
 // ==================== Mono Theme ====================
@@ -144,6 +164,21 @@ inline lv_theme_t* theme_simple_init(lv_display_t* disp) noexcept {
 /// Initialize mono (monochrome) theme
 inline lv_theme_t* theme_mono_init(lv_display_t* disp, bool dark_bg, const lv_font_t* font) noexcept {
     return lv_theme_mono_init(disp, dark_bg, font);
+}
+
+/// Get mono theme
+inline lv_theme_t* theme_mono_get() noexcept {
+    return lv_theme_mono_get();
+}
+
+/// Check if mono theme is inited
+inline bool theme_mono_is_inited() noexcept {
+    return lv_theme_mono_is_inited();
+}
+
+/// Deinitialize mono theme
+inline void theme_mono_deinit() noexcept {
+    lv_theme_mono_deinit();
 }
 
 #endif // LV_USE_THEME_MONO

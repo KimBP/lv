@@ -8,7 +8,6 @@
  * 1. Stateless lambdas (convertible to function pointer) - ZERO overhead
  * 2. Member function pointers with instance - ZERO overhead (uses user_data)
  * 3. Function pointers - ZERO overhead
- * 4. Optional std::function support (requires LV_CPP_USE_STD_FUNCTION)
  *
  * ## Usage Examples
  *
@@ -53,10 +52,6 @@
 #include <utility>
 #include "object.hpp"  // For ObjectView
 
-#ifdef LV_CPP_USE_STD_FUNCTION
-#include <functional>
-#include <memory>
-#endif
 
 namespace lv {
 
