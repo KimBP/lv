@@ -62,6 +62,16 @@ public:
         return *this;
     }
 
+    /// Set label text with std::string
+    Label& text(const std::string& txt) noexcept {
+        return text(txt.c_str());
+    }
+
+    /// Set label text (convenience)
+    Label& set_text(const std::string& txt) noexcept {
+        return text(txt);
+    }
+
     /// Set label text with format string
     template<typename... Args>
     Label& text_fmt(const char* fmt, Args... args) noexcept {
