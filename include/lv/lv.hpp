@@ -64,6 +64,11 @@
 #include "core/fs.hpp"
 #include "core/font_loader.hpp"
 #include "core/string_utils.hpp"
+#include "core/async.hpp"
+
+#if LV_USE_LOG
+#include "core/log.hpp"
+#endif
 
 // Misc utilities
 #include "misc/gradient.hpp"

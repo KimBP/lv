@@ -575,6 +575,17 @@ namespace kColorFormat {
 }
 
 // ============================================================================
+// Display Rotation
+// ============================================================================
+
+namespace kDisplayRotation {
+    constexpr auto none               = LV_DISPLAY_ROTATION_0;
+    constexpr auto r90                = LV_DISPLAY_ROTATION_90;
+    constexpr auto r180               = LV_DISPLAY_ROTATION_180;
+    constexpr auto r270               = LV_DISPLAY_ROTATION_270;
+}
+
+// ============================================================================
 // Coordinate helpers
 // ============================================================================
 

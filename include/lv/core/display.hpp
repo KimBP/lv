@@ -48,6 +48,64 @@ public:
         return lv_display_get_theme(m_display);
     }
 
+    // ==================== Rotation ====================
+
+    /// Set display rotation
+    Display& rotation(lv_display_rotation_t rot) noexcept {
+        lv_display_set_rotation(m_display, rot);
+        return *this;
+    }
+
+    /// Get current rotation
+    [[nodiscard]] lv_display_rotation_t rotation() const noexcept {
+        return lv_display_get_rotation(m_display);
+    }
+
+    // ==================== DPI ====================
+
+    /// Set display DPI
+    Display& dpi(int32_t val) noexcept {
+        lv_display_set_dpi(m_display, val);
+        return *this;
+    }
+
+    /// Get display DPI
+    [[nodiscard]] int32_t dpi() const noexcept {
+        return lv_display_get_dpi(m_display);
+    }
+
+    // ==================== Color Format ====================
+
+    /// Set display color format
+    Display& color_format(lv_color_format_t cf) noexcept {
+        lv_display_set_color_format(m_display, cf);
+        return *this;
+    }
+
+    /// Get display color format
+    [[nodiscard]] lv_color_format_t color_format() const noexcept {
+        return lv_display_get_color_format(m_display);
+    }
+
+    // ==================== Layers ====================
+
+    /// Get top layer (above normal screens, for popups/overlays)
+    [[nodiscard]] ObjectView layer_top() const noexcept {
+        return ObjectView(lv_display_get_layer_top(m_display));
+    }
+
+    /// Get system layer (topmost, for system-level overlays like cursor)
+    [[nodiscard]] ObjectView layer_sys() const noexcept {
+        return ObjectView(lv_display_get_layer_sys(m_display));
+    }
+
+    /// Get bottom layer (below normal screens)
+    [[nodiscard]] ObjectView layer_bottom() const noexcept {
+        return ObjectView(lv_display_get_layer_bottom(m_display));
+    }
+
+    // ==================== Static ====================
+
     /// Get default display
     [[nodiscard]] static Display get_default() noexcept {
         return Display(lv_display_get_default());
