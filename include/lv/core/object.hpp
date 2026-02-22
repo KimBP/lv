@@ -160,6 +160,53 @@ public:
     void clean() noexcept {
         lv_obj_clean(m_obj);
     }
+
+    // ==================== Geometry Getters ====================
+
+    /// Get object width
+    [[nodiscard]] int32_t get_width() const noexcept {
+        return lv_obj_get_width(m_obj);
+    }
+
+    /// Get object height
+    [[nodiscard]] int32_t get_height() const noexcept {
+        return lv_obj_get_height(m_obj);
+    }
+
+    /// Get content width (excluding padding)
+    [[nodiscard]] int32_t content_width() const noexcept {
+        return lv_obj_get_content_width(m_obj);
+    }
+
+    /// Get content height (excluding padding)
+    [[nodiscard]] int32_t content_height() const noexcept {
+        return lv_obj_get_content_height(m_obj);
+    }
+
+    /// Get object coordinates
+    void get_coords(lv_area_t* area) const noexcept {
+        lv_obj_get_coords(m_obj, area);
+    }
+
+    // ==================== Scroll Getters ====================
+
+    /// Get horizontal scroll position
+    [[nodiscard]] int32_t scroll_x() const noexcept {
+        return lv_obj_get_scroll_x(m_obj);
+    }
+
+    /// Get vertical scroll position
+    [[nodiscard]] int32_t scroll_y() const noexcept {
+        return lv_obj_get_scroll_y(m_obj);
+    }
+
+    // ==================== Extended Draw Size ====================
+
+    /// Calculate the extra draw size needed for a part (shadow, outline, etc.)
+    [[nodiscard]] int32_t calculate_ext_draw_size(lv_part_t part = LV_PART_MAIN) const noexcept {
+        return lv_obj_calculate_ext_draw_size(m_obj, part);
+    }
+
 };
 
 
@@ -623,51 +670,7 @@ public:
         return *static_cast<Derived*>(this);
     }
 
-    // ==================== Geometry Getters ====================
-
-    /// Get object width
-    [[nodiscard]] int32_t get_width() const noexcept {
-        return lv_obj_get_width(obj());
-    }
-
-    /// Get object height
-    [[nodiscard]] int32_t get_height() const noexcept {
-        return lv_obj_get_height(obj());
-    }
-
-    /// Get content width (excluding padding)
-    [[nodiscard]] int32_t content_width() const noexcept {
-        return lv_obj_get_content_width(obj());
-    }
-
-    /// Get content height (excluding padding)
-    [[nodiscard]] int32_t content_height() const noexcept {
-        return lv_obj_get_content_height(obj());
-    }
-
-    /// Get object coordinates
-    void get_coords(lv_area_t* area) const noexcept {
-        lv_obj_get_coords(obj(), area);
-    }
-
-    // ==================== Scroll Getters ====================
-
-    /// Get horizontal scroll position
-    [[nodiscard]] int32_t scroll_x() const noexcept {
-        return lv_obj_get_scroll_x(obj());
-    }
-
-    /// Get vertical scroll position
-    [[nodiscard]] int32_t scroll_y() const noexcept {
-        return lv_obj_get_scroll_y(obj());
-    }
-
     // ==================== Extended Draw Size ====================
-
-    /// Calculate the extra draw size needed for a part (shadow, outline, etc.)
-    [[nodiscard]] int32_t calculate_ext_draw_size(lv_part_t part = LV_PART_MAIN) const noexcept {
-        return lv_obj_calculate_ext_draw_size(obj(), part);
-    }
 
     /// Trigger a refresh of the extended draw size
     Derived& refresh_ext_draw_size() noexcept {

@@ -29,7 +29,7 @@
     // Widget typed getter (from ObjectMixin)
     int* b = btn.user_data_as<int>();
 
-    // Raw ObjectView getter (get_ prefix)
+    // Raw ObjectView getter (get_ prefix to avoid ambiguity with ObjectMixin)
     lv::ObjectView obj(nullptr);
     void* c = obj.get_user_data();
     int* d = obj.get_user_data<int>();
@@ -148,6 +148,34 @@ struct Dummy {
     // Convenience shorthands
     btn.on_click([](lv::Event) {});
     btn.on_click<&Dummy::on_click>(&d);
+}
+
+// ============================================================
+// ObjectView getters: parent().get_width(), child().get_height()
+// (regression: getters were only on ObjectMixin, not ObjectView)
+// ============================================================
+
+[[maybe_unused]] static void test_objectview_getters() {
+    lv::Button btn;
+
+    // Geometry getters on ObjectView returned by parent()/child()
+    int32_t w = btn.parent().get_width();
+    int32_t h = btn.parent().get_height();
+    int32_t cw = btn.child(0).content_width();
+    int32_t ch = btn.child(0).content_height();
+
+    // Scroll getters
+    int32_t sx = btn.parent().scroll_x();
+    int32_t sy = btn.parent().scroll_y();
+
+    // Extended draw size
+    int32_t eds = btn.parent().calculate_ext_draw_size();
+
+    // user_data on bare ObjectView
+    void* ud = btn.parent().get_user_data();
+
+    (void)w; (void)h; (void)cw; (void)ch;
+    (void)sx; (void)sy; (void)eds; (void)ud;
 }
 
 int main() {

@@ -606,11 +606,11 @@ public:
     }
 };
 
-class Button : public ObjectView,
-               public ObjectMixin<Button>,    // Gets size(), width(), etc.
-               public EventMixin<Button>,     // Gets on_click(), on_event(), etc.
-               public StyleMixin<Button> {    // Gets bg_color(), padding(), etc.
-    // All methods return Button& for fluent chaining
+class Button : public ObjectView,          // Getters: get_width(), parent(), scroll_x(), etc.
+               public ObjectMixin<Button>,    // Fluent setters: size(), width(), hide(), etc.
+               public EventMixin<Button>,     // Event callbacks: on_click(), on(), etc.
+               public StyleMixin<Button> {    // Style setters: bg_color(), padding(), etc.
+    // Setter methods return Button& for fluent chaining
 };
 ```
 
@@ -671,8 +671,13 @@ available for application use.
 | Widget (Button, Grid, etc.) | `.user_data(ptr)` | `.user_data()` | `.user_data_as<T>()` |
 | Raw `ObjectView` / `root()` | `lv_obj_set_user_data(obj, ptr)` | `.get_user_data()` | `.get_user_data<T>()` |
 
-Widgets inherit both setter and getter from `ObjectMixin`. Raw `ObjectView` (e.g. from
-`Component::root()`) provides `get_user_data()` / `get_user_data<T>()` directly.
+Widgets inherit setter and getter overloads from `ObjectMixin`. Raw `ObjectView` (e.g. from
+`parent()`, `child()`, `Component::root()`) uses `get_user_data()` — a different name
+to avoid ambiguity with `ObjectMixin::user_data()` in multiple inheritance.
+
+> **Note:** Most read-only getters (`get_width()`, `get_height()`, `scroll_x()`, etc.)
+> live on `ObjectView`, not `ObjectMixin`. The `user_data` getter is an exception because
+> of the naming conflict described above. See `docs/DESIGN_OBJECTVIEW_GETTERS.md`.
 
 ---
 
