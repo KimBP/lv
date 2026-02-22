@@ -13,6 +13,7 @@
 #include <utility>
 #include <cstdint>
 #include "wrap.hpp"
+#include "version.hpp"
 
 namespace lv {
 
@@ -627,6 +628,41 @@ public:
         lv_obj_remove_style_all(obj());
         return *static_cast<Derived*>(this);
     }
+
+#if LV_VERSION_AT_LEAST(9, 5, 0)
+    /// Remove theme styles from this object (LVGL 9.5+)
+    Derived& remove_theme(lv_style_selector_t selector = 0) noexcept {
+        lv_obj_remove_theme(obj(), selector);
+        return *static_cast<Derived*>(this);
+    }
+#endif
+
+    // ==================== Radio Button ====================
+
+#if LV_VERSION_AT_LEAST(9, 5, 0)
+    /// Enable/disable radio button behavior (LVGL 9.5+)
+    /// When enabled, checking this object unchecks siblings in the same parent
+    Derived& radio_button(bool en = true) noexcept {
+        lv_obj_set_radio_button(obj(), en);
+        return *static_cast<Derived*>(this);
+    }
+
+    /// Check if radio button behavior is enabled (LVGL 9.5+)
+    [[nodiscard]] bool is_radio_button() const noexcept {
+        return lv_obj_is_radio_button(obj());
+    }
+#endif
+
+    // ==================== Style Binding ====================
+
+#if LV_VERSION_AT_LEAST(9, 5, 0) && LV_USE_OBSERVER
+    /// Bind a style property to a reactive subject (LVGL 9.5+)
+    /// The property updates automatically when the subject value changes
+    lv_observer_t* bind_style_prop(lv_style_prop_t prop, lv_style_selector_t selector,
+                                   lv_subject_t* subject) noexcept {
+        return lv_obj_bind_style_prop(obj(), prop, selector, subject);
+    }
+#endif
 
     // ==================== Scroll Operations ====================
 

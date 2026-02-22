@@ -11,6 +11,8 @@
 
 #include <lv/lv.hpp>
 #include <lv/core/verify.hpp>
+#include <lv/draw/draw_mask.hpp>
+#include <lv/draw/draw_task.hpp>
 
 // ============================================================
 // user_data: no ambiguity on widgets or raw ObjectView
@@ -177,6 +179,90 @@ struct Dummy {
     (void)w; (void)h; (void)cw; (void)ch;
     (void)sx; (void)sy; (void)eds; (void)ud;
 }
+
+// ============================================================
+// LVGL 9.5+ gated APIs (regression: must compile when available)
+// ============================================================
+
+#if LV_VERSION_AT_LEAST(9, 5, 0)
+[[maybe_unused]] static void test_lvgl_9_5_apis() {
+    lv::Button btn;
+
+    // kState::alt
+    [[maybe_unused]] lv_state_t alt = lv::kState::alt;
+
+    // ObjectMixin::remove_theme
+    btn.remove_theme();
+    btn.remove_theme(lv::kPart::main);
+
+    // ObjectMixin::radio_button / is_radio_button
+    btn.radio_button(true);
+    [[maybe_unused]] bool rb = btn.is_radio_button();
+
+    // Display::rotate_point
+    lv::Display disp = lv::Display::get_default();
+    lv_point_t pt = {10, 20};
+    disp.rotate_point(&pt);
+
+    // MaskRectDsc
+    lv::MaskRectDsc mask;
+    mask.area(0, 0, 100, 100).radius(10).keep_outside(true);
+    [[maybe_unused]] auto r = mask.get_radius();
+
+    // DrawTaskView::mask_rect_dsc
+    lv::DrawTaskView dtv(nullptr);
+    [[maybe_unused]] auto* dsc = dtv.mask_rect_dsc();
+
+    // kChartType::curve
+#if LV_USE_CHART
+    [[maybe_unused]] auto curve = lv::kChartType::curve;
+#endif
+
+    // Theme create/copy/delete
+    lv::Theme theme = lv::theme_create();
+    lv::Theme theme2 = lv::theme_create();
+    lv::theme_copy(theme2, theme);
+    lv::theme_delete(theme2);
+    lv::theme_delete(theme);
+
+    // ObjectMixin::bind_style_prop (requires LV_USE_OBSERVER)
+#if LV_USE_OBSERVER
+    {
+        lv::Button btn2;
+        lv_subject_t subj;
+        lv_subject_init_int(&subj, 0);
+        [[maybe_unused]] auto* obs = btn2.bind_style_prop(LV_STYLE_WIDTH, lv::kPart::main, &subj);
+        lv_subject_deinit(&subj);
+    }
+#endif
+
+    // ArcLabel overflow and text_angle
+#if LV_USE_ARCLABEL
+    {
+        lv::ArcLabel al = lv::ArcLabel::create(lv::screen_active());
+        al.overflow(lv::ArcLabelOverflow::clip);
+        [[maybe_unused]] auto ov = al.get_overflow();
+        [[maybe_unused]] auto ta = al.get_text_angle();
+    }
+#endif
+
+    // Indev gesture and key remap
+    {
+        lv::Indev indev;
+        indev.gesture_min_velocity(10);
+        indev.gesture_min_distance(20);
+        indev.key_remap_cb(nullptr);
+    }
+
+    // Group user_data
+    {
+        lv::Group grp;
+        grp.user_data(nullptr);
+        [[maybe_unused]] void* ud = grp.user_data();
+        [[maybe_unused]] int* typed_ud = grp.user_data_as<int>();
+    }
+}
+#endif
 
 int main() {
     return 0;

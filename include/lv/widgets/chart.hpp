@@ -6,6 +6,7 @@
  */
 
 #include <lvgl.h>
+#include "../core/version.hpp"
 #include "../core/object.hpp"
 #include "../core/event.hpp"
 #include "../core/style.hpp"
@@ -32,6 +33,9 @@ public:
         static constexpr auto line = LV_CHART_TYPE_LINE;
         static constexpr auto bar = LV_CHART_TYPE_BAR;
         static constexpr auto scatter = LV_CHART_TYPE_SCATTER;
+#if LV_VERSION_AT_LEAST(9, 5, 0)
+        static constexpr auto curve = LV_CHART_TYPE_CURVE;  ///< @since LVGL 9.5
+#endif
     };
 
     /// Chart axis constants
@@ -82,6 +86,13 @@ public:
     Chart& type_scatter() noexcept {
         return type(LV_CHART_TYPE_SCATTER);
     }
+
+#if LV_VERSION_AT_LEAST(9, 5, 0)
+    /// Bézier curve chart (LVGL 9.5+, requires LV_USE_VECTOR_GRAPHIC)
+    Chart& type_curve() noexcept {
+        return type(LV_CHART_TYPE_CURVE);
+    }
+#endif
 
     /// Get chart type
     [[nodiscard]] lv_chart_type_t get_type() const noexcept {

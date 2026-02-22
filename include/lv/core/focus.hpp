@@ -7,6 +7,7 @@
 
 #include <lvgl.h>
 #include "object.hpp"
+#include "version.hpp"
 
 namespace lv {
 
@@ -139,6 +140,27 @@ public:
     [[nodiscard]] bool get_editing() const noexcept {
         return lv_group_get_editing(m_group);
     }
+
+    // ==================== User Data (LVGL 9.5+) ====================
+
+#if LV_VERSION_AT_LEAST(9, 5, 0)
+    /// Set user data (LVGL 9.5+)
+    Group& user_data(void* data) noexcept {
+        lv_group_set_user_data(m_group, data);
+        return *this;
+    }
+
+    /// Get user data (LVGL 9.5+)
+    [[nodiscard]] void* user_data() const noexcept {
+        return lv_group_get_user_data(m_group);
+    }
+
+    /// Get user data as typed pointer (LVGL 9.5+)
+    template<typename T>
+    [[nodiscard]] T* user_data_as() const noexcept {
+        return static_cast<T*>(lv_group_get_user_data(m_group));
+    }
+#endif
 };
 
 // Zero-cost check: wrapper must be pointer-sized

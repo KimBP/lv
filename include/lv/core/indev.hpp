@@ -9,6 +9,7 @@
 
 #include <lvgl.h>
 #include "object.hpp"
+#include "version.hpp"
 
 namespace lv {
 
@@ -237,6 +238,29 @@ public:
         lv_indev_set_scroll_throw(m_indev, slowdown);
         return *this;
     }
+
+    // ==================== Gesture (LVGL 9.5+) ====================
+
+#if LV_VERSION_AT_LEAST(9, 5, 0)
+    /// Set minimum gesture velocity threshold (LVGL 9.5+)
+    Indev& gesture_min_velocity(uint8_t velocity) noexcept {
+        lv_indev_set_gesture_min_velocity(m_indev, velocity);
+        return *this;
+    }
+
+    /// Set minimum gesture distance threshold (LVGL 9.5+)
+    Indev& gesture_min_distance(uint8_t distance) noexcept {
+        lv_indev_set_gesture_min_distance(m_indev, distance);
+        return *this;
+    }
+
+    /// Set key remap callback (LVGL 9.5+)
+    /// Callback signature: lv_key_t(lv_indev_t*, lv_key_t)
+    Indev& key_remap_cb(lv_indev_key_remap_cb_t cb) noexcept {
+        lv_indev_set_key_remap_cb(m_indev, cb);
+        return *this;
+    }
+#endif
 };
 
 // ==================== Input Device Helpers ====================

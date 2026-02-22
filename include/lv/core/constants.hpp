@@ -13,6 +13,7 @@
  */
 
 #include <lvgl.h>
+#include "version.hpp"
 
 namespace lv {
 
@@ -69,6 +70,9 @@ namespace kPart {
 
 namespace kState {
     constexpr lv_state_t default_      = LV_STATE_DEFAULT;
+#if LV_VERSION_AT_LEAST(9, 5, 0)
+    constexpr lv_state_t alt           = LV_STATE_ALT;           ///< @since LVGL 9.5
+#endif
     constexpr lv_state_t checked       = LV_STATE_CHECKED;
     constexpr lv_state_t focused       = LV_STATE_FOCUSED;
     constexpr lv_state_t focus_key     = LV_STATE_FOCUS_KEY;
@@ -115,12 +119,8 @@ namespace kFlag {
 #endif
     constexpr auto user_1              = LV_OBJ_FLAG_USER_1;
     constexpr auto user_2              = LV_OBJ_FLAG_USER_2;
-#ifdef LV_OBJ_FLAG_USER_3
     constexpr auto user_3              = LV_OBJ_FLAG_USER_3;
-#endif
-#ifdef LV_OBJ_FLAG_USER_4
     constexpr auto user_4              = LV_OBJ_FLAG_USER_4;
-#endif
 }
 
 // ============================================================================
@@ -275,6 +275,9 @@ namespace kChartType {
     constexpr auto line    = LV_CHART_TYPE_LINE;
     constexpr auto bar     = LV_CHART_TYPE_BAR;
     constexpr auto scatter = LV_CHART_TYPE_SCATTER;
+#if LV_VERSION_AT_LEAST(9, 5, 0)
+    constexpr auto curve   = LV_CHART_TYPE_CURVE;    ///< @since LVGL 9.5
+#endif
 }
 
 namespace kChartAxis {

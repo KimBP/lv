@@ -44,6 +44,7 @@
 #include <lvgl.h>
 
 // Core
+#include "core/version.hpp"
 #include "core/constants.hpp"
 #include "core/object.hpp"
 #include "core/event.hpp"

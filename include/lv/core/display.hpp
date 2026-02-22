@@ -9,6 +9,7 @@
 
 #include <lvgl.h>
 #include "object.hpp"
+#include "version.hpp"
 #include <cstdint>
 
 namespace lv {
@@ -103,6 +104,15 @@ public:
     [[nodiscard]] ObjectView layer_bottom() const noexcept {
         return ObjectView(lv_display_get_layer_bottom(m_display));
     }
+
+    // ==================== Coordinate Transform ====================
+
+#if LV_VERSION_AT_LEAST(9, 5, 0)
+    /// Rotate a point according to display rotation (LVGL 9.5+)
+    void rotate_point(lv_point_t* point) const noexcept {
+        lv_display_rotate_point(m_display, point);
+    }
+#endif
 
     // ==================== Static ====================
 

@@ -6,6 +6,10 @@
  */
 
 #include <lvgl.h>
+#include "../core/version.hpp"
+#if LV_VERSION_AT_LEAST(9, 5, 0)
+#include <src/draw/lv_draw_mask.h>
+#endif
 
 namespace lv {
 
@@ -92,6 +96,13 @@ public:
     [[nodiscard]] lv_draw_triangle_dsc_t* triangle_dsc() const noexcept {
         return m_task ? lv_draw_task_get_triangle_dsc(m_task) : nullptr;
     }
+
+#if LV_VERSION_AT_LEAST(9, 5, 0)
+    /// Get as mask rectangle descriptor (if type is MASK_RECTANGLE, LVGL 9.5+)
+    [[nodiscard]] lv_draw_mask_rect_dsc_t* mask_rect_dsc() const noexcept {
+        return m_task ? lv_draw_task_get_mask_rect_dsc(m_task) : nullptr;
+    }
+#endif
 };
 
 namespace draw {

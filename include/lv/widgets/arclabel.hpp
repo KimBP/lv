@@ -8,6 +8,7 @@
  */
 
 #include <lvgl.h>
+#include "../core/version.hpp"
 
 #if LV_USE_ARCLABEL
 
@@ -16,6 +17,17 @@
 #include "../core/style.hpp"
 
 namespace lv {
+
+#if LV_VERSION_AT_LEAST(9, 5, 0)
+/**
+ * @brief Arc label overflow mode (LVGL 9.5+)
+ */
+struct ArcLabelOverflow {
+    static constexpr auto visible  = LV_ARCLABEL_OVERFLOW_VISIBLE;   ///< Show full text, may overflow
+    static constexpr auto ellipsis = LV_ARCLABEL_OVERFLOW_ELLIPSIS;  ///< Show ... when text overflows
+    static constexpr auto clip     = LV_ARCLABEL_OVERFLOW_CLIP;      ///< Clip text at arc boundary
+};
+#endif
 
 /**
  * @brief Arc label direction
@@ -187,6 +199,16 @@ public:
         return *this;
     }
 
+    // ==================== Overflow (LVGL 9.5+) ====================
+
+#if LV_VERSION_AT_LEAST(9, 5, 0)
+    /// Set overflow mode (LVGL 9.5+)
+    ArcLabel& overflow(lv_arclabel_overflow_t mode) noexcept {
+        lv_arclabel_set_overflow(m_obj, mode);
+        return *this;
+    }
+#endif
+
     // ==================== Getters ====================
 
     [[nodiscard]] lv_value_precise_t get_angle_start() const noexcept {
@@ -224,6 +246,18 @@ public:
     [[nodiscard]] lv_arclabel_text_align_t get_horizontal_align() const noexcept {
         return lv_arclabel_get_text_horizontal_align(m_obj);
     }
+
+#if LV_VERSION_AT_LEAST(9, 5, 0)
+    /// Get overflow mode (LVGL 9.5+)
+    [[nodiscard]] lv_arclabel_overflow_t get_overflow() const noexcept {
+        return lv_arclabel_get_overflow(m_obj);
+    }
+
+    /// Get rendered text angle in degrees (LVGL 9.5+)
+    [[nodiscard]] lv_value_precise_t get_text_angle() const noexcept {
+        return lv_arclabel_get_text_angle(m_obj);
+    }
+#endif
 };
 
 } // namespace lv

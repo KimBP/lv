@@ -9,6 +9,7 @@
 
 #include <lvgl.h>
 #include "object.hpp"
+#include "version.hpp"
 
 namespace lv {
 
@@ -182,5 +183,27 @@ inline void theme_mono_deinit() noexcept {
 }
 
 #endif // LV_USE_THEME_MONO
+
+// ==================== Theme Lifecycle (LVGL 9.5+) ====================
+
+#if LV_VERSION_AT_LEAST(9, 5, 0)
+
+/// Create a new empty theme (LVGL 9.5+)
+inline Theme theme_create() noexcept {
+    return Theme(lv_theme_create());
+}
+
+/// Copy theme properties from src to dst (LVGL 9.5+)
+inline void theme_copy(Theme& dst, const Theme& src) noexcept {
+    lv_theme_copy(dst.get(), src.get());
+}
+
+/// Delete a dynamically created theme and reset the wrapper (LVGL 9.5+)
+inline void theme_delete(Theme& theme) noexcept {
+    lv_theme_delete(theme.get());
+    theme = Theme();
+}
+
+#endif // LV_VERSION_AT_LEAST(9, 5, 0)
 
 } // namespace lv
