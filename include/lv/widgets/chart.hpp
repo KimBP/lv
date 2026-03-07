@@ -225,6 +225,11 @@ public:
         return update_mode(LV_CHART_UPDATE_MODE_SHIFT);
     }
 
+    /// Get update mode
+    [[nodiscard]] lv_chart_update_mode_t get_update_mode() const noexcept {
+        return lv_chart_get_update_mode(m_obj);
+    }
+
     /// Set division lines
     Chart& div_lines(uint8_t hdiv, uint8_t vdiv) noexcept {
         lv_chart_set_div_line_count(m_obj, hdiv, vdiv);
@@ -237,10 +242,20 @@ public:
         return *this;
     }
 
+    /// Get horizontal division line count
+    [[nodiscard]] uint32_t hor_div_lines() const noexcept {
+        return lv_chart_get_hor_div_line_count(m_obj);
+    }
+
     /// Set vertical division line count
     Chart& ver_div_lines(uint32_t cnt) noexcept {
         lv_chart_set_ver_div_line_count(m_obj, cnt);
         return *this;
+    }
+
+    /// Get vertical division line count
+    [[nodiscard]] uint32_t ver_div_lines() const noexcept {
+        return lv_chart_get_ver_div_line_count(m_obj);
     }
 
     /// Hide a series

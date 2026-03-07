@@ -394,6 +394,25 @@ public:
     }
 
     /**
+     * @brief Add a runtime-selected LVGL event callback with explicit user_data
+     *
+     * This is the low-level escape hatch for systems like interpreters and
+     * dynamic UI runtimes that cannot encode the callback target as a template
+     * parameter. No allocation is performed; the caller owns `user_data` and
+     * is responsible for keeping it alive until the callback is removed or the
+     * object is deleted.
+     */
+    Derived& on(lv_event_code_t code, lv_event_cb_t cb, void* user_data) noexcept {
+        lv_obj_add_event_cb(obj(), cb, code, user_data);
+        return *static_cast<Derived*>(this);
+    }
+
+    /// Convenience alias for explicitly low-level callback registration.
+    Derived& on_raw(lv_event_code_t code, lv_event_cb_t cb, void* user_data = nullptr) noexcept {
+        return on(code, cb, user_data);
+    }
+
+    /**
      * @brief Add event callback using member function pointer
      *
      * Zero overhead - member function pointer is template parameter,
