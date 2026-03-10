@@ -26,6 +26,7 @@ class Image : public ObjectView,
 public:
     constexpr Image() noexcept : ObjectView(nullptr) {}
     constexpr Image(wrap_t, lv_obj_t* obj) noexcept : ObjectView(obj) {}
+    Image(ObjectView parent) : Image(wrap, lv_image_create(parent.get())) {}
 
     [[nodiscard]] static Image create(lv_obj_t* parent) {
         return Image(wrap, lv_image_create(parent));
