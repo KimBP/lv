@@ -27,6 +27,7 @@ public:
     constexpr List() noexcept : ObjectView(nullptr) {}
 
     constexpr List(wrap_t, lv_obj_t* obj) noexcept : ObjectView(obj) {}
+    List(ObjectView parent) : List(wrap, lv_list_create(parent.get())) {}
 
     [[nodiscard]] static List create(lv_obj_t* parent) {
         return List(wrap, lv_list_create(parent));
