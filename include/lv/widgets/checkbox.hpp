@@ -26,6 +26,7 @@ class Checkbox : public ObjectView,
 public:
     constexpr Checkbox() noexcept : ObjectView(nullptr) {}
     constexpr Checkbox(wrap_t, lv_obj_t* obj) noexcept : ObjectView(obj) {}
+    Checkbox(ObjectView parent) : Checkbox(wrap, lv_checkbox_create(parent.get())) {}
 
     [[nodiscard]] static Checkbox create(lv_obj_t* parent) {
         return Checkbox(wrap, lv_checkbox_create(parent));
