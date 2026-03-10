@@ -28,6 +28,8 @@ public:
 
     constexpr Msgbox(wrap_t, lv_obj_t* obj) noexcept : ObjectView(obj) {}
 
+    Msgbox(ObjectView parent) noexcept : Msgbox(wrap, lv_msgbox_create(parent.get())) {}
+
     /// Create message box (parent = nullptr for modal on active screen)
     [[nodiscard]] static Msgbox create(lv_obj_t* parent = nullptr) {
         return Msgbox(wrap, lv_msgbox_create(parent));
