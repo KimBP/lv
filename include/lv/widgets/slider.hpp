@@ -30,6 +30,7 @@ class Slider : public ObjectView,
 public:
     constexpr Slider() noexcept : ObjectView(nullptr) {}
     constexpr Slider(wrap_t, lv_obj_t* obj) noexcept : ObjectView(obj) {}
+    Slider(ObjectView parent) : Slider(wrap, lv_slider_create(parent.get())) {}
 
     [[nodiscard]] static Slider create(lv_obj_t* parent) {
         return Slider(wrap, lv_slider_create(parent));
