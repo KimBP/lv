@@ -42,27 +42,27 @@ public:
     // ==================== Content ====================
 
     /// Add title
-    [[nodiscard]] ObjectView add_title(const char* txt) noexcept {
+    ObjectView add_title(const char* txt) noexcept {
         return ObjectView(lv_msgbox_add_title(m_obj, txt));
     }
 
     /// Add text content
-    [[nodiscard]] ObjectView add_text(const char* txt) noexcept {
+    ObjectView add_text(const char* txt) noexcept {
         return ObjectView(lv_msgbox_add_text(m_obj, txt));
     }
 
     /// Add header button (e.g., close button)
-    [[nodiscard]] ObjectView add_header_button(const void* icon) noexcept {
+    ObjectView add_header_button(const void* icon) noexcept {
         return ObjectView(lv_msgbox_add_header_button(m_obj, icon));
     }
 
     /// Add footer button
-    [[nodiscard]] ObjectView add_footer_button(const char* txt) noexcept {
+    ObjectView add_footer_button(const char* txt) noexcept {
         return ObjectView(lv_msgbox_add_footer_button(m_obj, txt));
     }
 
     /// Add close button to header
-    [[nodiscard]] ObjectView add_close_button() noexcept {
+    ObjectView add_close_button() noexcept {
         return ObjectView(lv_msgbox_add_close_button(m_obj));
     }
 
