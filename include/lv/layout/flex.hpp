@@ -114,6 +114,9 @@ public:
         return *this;
     }
 
+    using ObjectMixin<Flex>::align; // Ensure we can still see align()
+				    // from ObjectMixin class
+
     /// Set all alignments at once
     Flex& align(lv_flex_align_t main, lv_flex_align_t cross,
                 lv_flex_align_t track = LV_FLEX_ALIGN_START) noexcept {
