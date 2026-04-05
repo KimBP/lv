@@ -130,6 +130,16 @@ public:
         return lv_obj_has_flag(m_obj, flag);
     }
 
+    /// Add object flags (camelCase to avoid ambiguity with ObjectMixin::add_flag on widget types)
+    void addFlag(lv_obj_flag_t flag) noexcept {
+        lv_obj_add_flag(m_obj, flag);
+    }
+
+    /// Remove object flags (camelCase to avoid ambiguity with ObjectMixin::remove_flag on widget types)
+    void removeFlag(lv_obj_flag_t flag) noexcept {
+        lv_obj_remove_flag(m_obj, flag);
+    }
+
     // ==================== Parent/Child ====================
 
     /// Get parent object
