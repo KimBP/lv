@@ -89,4 +89,69 @@ public:
     // are inherited from ObjectMixin<Box>.
 };
 
+/**
+ * @brief Owning Box — destroys the LVGL object on destruction.
+ *
+ * Identical to Box but owns the underlying lv_obj_t: the destructor calls
+ * lv_obj_delete(), removing the widget and all its children from the tree.
+ * Move-only to prevent double deletion.
+ *
+ * Use this when a C++ object must own a widget's lifetime, e.g. as a member
+ * of a screen class where the widget must be destroyed before style members.
+ *
+ * @code
+ * class MyScreen {
+ *     lv::Style style;          // destroyed AFTER screen (reverse order)
+ *     lv::OwnedBox screen;      // destroyed first — safe to hold style ptr
+ * };
+ * @endcode
+ */
+class OwnedBox : public ObjectView,
+                 public ObjectMixin<OwnedBox>,
+                 public EventMixin<OwnedBox>,
+                 public StyleMixin<OwnedBox> {
+public:
+    /// Default constructor — null/empty (no LVGL object created)
+    constexpr OwnedBox() noexcept : ObjectView(nullptr) {}
+
+    /// Create a new LVGL object with the given parent and take ownership
+    explicit OwnedBox(ObjectView parent) noexcept
+    : ObjectView(lv_obj_create(parent.get()))
+    {
+        lv_obj_remove_flag(m_obj, LV_OBJ_FLAG_SCROLLABLE);
+    }
+
+    /// Destructor deletes the owned LVGL object
+    ~OwnedBox() noexcept {
+        if (m_obj) {
+            lv_obj_delete(m_obj);
+            m_obj = nullptr;
+        }
+    }
+
+    // Non-copyable
+    OwnedBox(const OwnedBox&) = delete;
+    OwnedBox& operator=(const OwnedBox&) = delete;
+
+    // Move-only
+    OwnedBox(OwnedBox&& other) noexcept : ObjectView(other.m_obj) {
+        other.m_obj = nullptr;
+    }
+    OwnedBox& operator=(OwnedBox&& other) noexcept {
+        if (this != &other) {
+            if (m_obj) lv_obj_delete(m_obj);
+            m_obj = other.m_obj;
+            other.m_obj = nullptr;
+        }
+        return *this;
+    }
+
+    /// Release ownership without deleting — caller takes responsibility
+    [[nodiscard]] lv_obj_t* release() noexcept {
+        auto* p = m_obj;
+        m_obj = nullptr;
+        return p;
+    }
+};
+
 } // namespace lv
